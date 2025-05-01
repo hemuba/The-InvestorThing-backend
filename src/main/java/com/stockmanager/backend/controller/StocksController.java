@@ -6,10 +6,8 @@ import com.stockmanager.backend.dto.StockDTOResponse;
 import com.stockmanager.backend.service.StocksService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class StocksController {
     @GetMapping("/get-stocks-by")
     public List<StockDTOResponse> getStocksBy(@RequestParam(required = false) String ticker,@RequestParam(required = false) String sector){
         if (ticker == null && sector == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing or wrong query parameters.");
+            throw new IllegalArgumentException("Missing or wrong query parameters.");
         }
 
         return stocksService.getStockBy(ticker, sector);

@@ -6,9 +6,7 @@ import com.stockmanager.backend.dto.StockDTOResponse;
 import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
 import com.stockmanager.backend.repository.CurrentStocks;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +103,7 @@ public class StocksService {
         return "Ticker " + ticker + " update successfully!";
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticker" + ticker + " not found in the Database");
+        throw new IllegalArgumentException("Ticker" + ticker + " not found in the Database");
     }
 
     public String addStocks(List<StockDTORequest> stocksDTORequest){

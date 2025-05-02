@@ -1,5 +1,6 @@
 package com.stockmanager.backend.repository;
 
+import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.model.Stock;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +23,14 @@ public class CurrentStocks {
                 .toList();
     }
 
-    public String removeStock(String ticker){
-        currentStocks.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
-        return "Ticker " + ticker + " successfully removed from Database.";
+    public String removeStock(String ticker) {
+        boolean removed = currentStocks.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
+        if (removed) {
+            return "Ticker " + ticker + " successfully removed from Database.";
+        }
+        else{
+            throw new NotFoundException("Ticker " + ticker + " not found in the Database" );
+        }
     }
 
 }

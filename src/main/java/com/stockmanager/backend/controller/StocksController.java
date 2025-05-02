@@ -3,6 +3,7 @@ package com.stockmanager.backend.controller;
 
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
+import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.service.StocksService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +30,7 @@ public class StocksController {
     @GetMapping("/get-stocks-by")
     public List<StockDTOResponse> getStocksBy(@RequestParam(required = false) String ticker,@RequestParam(required = false) String sector){
         if (ticker == null && sector == null){
-            throw new IllegalArgumentException("Missing or wrong query parameters.");
+            throw new BadRequestException("Missing or wrong query parameters.");
         }
 
         return stocksService.getStockBy(ticker, sector);

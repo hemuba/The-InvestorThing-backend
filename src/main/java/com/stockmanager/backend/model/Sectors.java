@@ -1,5 +1,7 @@
 package com.stockmanager.backend.model;
 
+import com.stockmanager.backend.exception.NotFoundException;
+
 public enum Sectors {
     TECHNOLOGY("Technology"),
     ENERGY("Energy"),
@@ -23,6 +25,6 @@ public enum Sectors {
                 return sector;
             }
         }
-        throw  new IllegalArgumentException("Sector " + description + " not found.");
+        throw  new NotFoundException("Sector " + description + " not found.");
     }
 }

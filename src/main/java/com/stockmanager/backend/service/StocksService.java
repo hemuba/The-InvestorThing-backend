@@ -3,6 +3,7 @@ package com.stockmanager.backend.service;
 
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
+import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
 import com.stockmanager.backend.repository.CurrentStocks;
@@ -103,7 +104,7 @@ public class StocksService {
         return "Ticker " + ticker + " update successfully!";
         }
 
-        throw new IllegalArgumentException("Ticker" + ticker + " not found in the Database");
+        throw new NotFoundException("Ticker" + ticker + " not found in the Database");
     }
 
     public String addStocks(List<StockDTORequest> stocksDTORequest){

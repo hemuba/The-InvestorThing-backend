@@ -49,11 +49,11 @@ public class StocksService {
                 stockDTORequest.getCompanyName(),
                 Sectors.fromDescription(stockDTORequest.getSector()),
                 stockDTORequest.getNoOfShares(),
-                stockDTORequest.getNoOfShares(),
                 stockDTORequest.getPurchasePrice(),
                 stockDTORequest.getCurrentPrice(),
                 stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice(),
                 currentReturnTotal,
+                stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares(),
                 stockDTORequest.getBuyDate()
         ));
         return "Stock " + stockDTORequest.getTicker() + " successfully added to the Database";

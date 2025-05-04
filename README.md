@@ -36,6 +36,7 @@ The goal of this repository is to grow alongside my learning path and progressiv
 - Delete stocks via DELETE
 - Update stocks via PUT or PATCH
 - Input validation with @Valid and @Validated
+- Global exception handling with @ControllerAdvice
 - Dynamic calculation of current return and total values
 - Clean separation of layers (Controller, Service, Repository)
 
@@ -43,15 +44,15 @@ The goal of this repository is to grow alongside my learning path and progressiv
 
 ## API Endpoints
 
-| Method | Endpoint                     | Description                     |
-|--------|------------------------------|---------------------------------|
-| GET    | `/get-stocks`                | Get all stocks                  |
-| POST   | `/add-stock`                 | Add a single stock              |
-| POST   | `/add-stocks`                | Add multiple stocks             |
-| GET    | `/get-stocks-by`             | Filter stocks by sector         |
-| DELETE | `/remove-stock`              | Delete a stock by ticker        |
-| PUT    | `/update-stock/{ticker}`     | Full update of a stock          |
-| PATCH  | `/patch-stock/{ticker}`      | Partial update of a stock       |
+| Method | Endpoint              | Description                     |
+|--------|-----------------------|---------------------------------|
+| GET    | `/stocks`             | Get all stocks                  |
+| GET    | `/stocks/by`          | Filter stocks by ticker/sector  |
+| POST   | `/stocks`             | Add a single stock              |
+| POST   | `/stocks/batch`       | Add multiple stocks             |
+| DELETE | `/stocks/{ticker}`    | Delete a stock by ticker        |
+| PUT    | `/stocks/{ticker}`    | Full update of a stock          |
+| PATCH  | `/stocks/{ticker}`    | Partial update of a stock       |
 
 ---
 
@@ -71,7 +72,7 @@ mvnw.cmd spring-boot:run
 
 ## Next Steps
 
-- Add global exception handling with @ControllerAdvice
+- ~~Add global exception handling with @ControllerAdvice~~ -> Done.
 - Introduce unit testing with JUnit and Mockito
 - Integrate JPA and Hibernate for persistence
 - Prepare the Oracle schema and initial data

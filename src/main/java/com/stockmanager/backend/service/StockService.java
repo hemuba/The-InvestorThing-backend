@@ -184,7 +184,7 @@ public class StockService {
                                 BigDecimal.valueOf(stockDTOPatch.getCurrentPrice() - stockDTOPatch.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP) :
                                 stock.getCurrentReturn()
                 );
-                stock.setCurrentTotal(
+                stock.setCurrentTotalReturn(
                         stockDTOPatch.getCurrentPrice() != null &&
                                 stockDTOPatch.getPurchasePrice() != null &&
                                 stockDTOPatch.getNoOfShares() != null ?

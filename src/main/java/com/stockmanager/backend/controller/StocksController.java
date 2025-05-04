@@ -44,6 +44,7 @@ public class StocksController {
         if (ticker == null && sector == null) {
             throw new BadRequestException("Missing or wrong query parameters.");
         }
+
         List<StockDTOResponse> respObj = stocksService.getStockBy(ticker, sector);
         return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Stocks", respObj));
     }

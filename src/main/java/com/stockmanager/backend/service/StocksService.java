@@ -47,8 +47,8 @@ public class StocksService {
         return allStockDTO;
     }
 
-    public List<StockDTOResponse> getStockBy(String ticker, String settore) {
-        List<Stock> stocksBy = currentStocks.getStocksBy(ticker, settore);
+    public List<StockDTOResponse> getStockBy(String ticker, String sector) {
+        List<Stock> stocksBy = currentStocks.getStocksBy(ticker, sector);
         List<StockDTOResponse> stocksDTOBy = new ArrayList<>();
         for (Stock stock : stocksBy) {
             stocksDTOBy.add(new StockDTOResponse(

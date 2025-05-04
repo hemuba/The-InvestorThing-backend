@@ -26,7 +26,7 @@ public class CurrentStocks {
     public String removeStock(String ticker) {
         boolean removed = currentStocks.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
         if (removed) {
-            return "Ticker " + ticker + " successfully removed from Database.";
+            return "Ticker " + ticker.toUpperCase() + " successfully removed from Database.";
         }
         else{
             throw new NotFoundException("Ticker " + ticker + " not found in the Database" );

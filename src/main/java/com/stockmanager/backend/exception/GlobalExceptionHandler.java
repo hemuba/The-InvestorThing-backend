@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,25 +18,32 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiResponse> handlerNotFound(NotFoundException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(404, exception.getMessage(), null));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(LocalDateTime.now(), 404, exception.getMessage(), null));
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiResponse> hanlderBadRequests(BadRequestException exception){
-        return ResponseEntity.badRequest().body(new ApiResponse(400, exception.getMessage(), null));
+        return ResponseEntity.badRequest().body(new ApiResponse(LocalDateTime.now(), 400, exception.getMessage(), null));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handlerDTOValidationErrors(MethodArgumentNotValidException exception){
         Map<String, String> errors = new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(new ApiResponse(400, "Validation errors", errors));
+        String message = "Validation failed for " + errors.size() + " field(s)";
+        return ResponseEntity.badRequest().body(new ApiResponse(LocalDateTime.now(), 400, message, errors));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse> handlerParamValidationErrors(ConstraintViolationException exception){
         Map<String, String> errors = new HashMap<>();
        exception.getConstraintViolations().forEach(v -> errors.put(v.getPropertyPath().toString(), v.getMessage()));
-       return ResponseEntity.badRequest().body(new ApiResponse(401, "Validation errors", errors));
+       String message = "Validation failed for " + errors.size() + " field(s)";
+       return ResponseEntity.badRequest().body(new ApiResponse(LocalDateTime.now(), 400, message, errors));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> hanlderGenericExceptions(Exception exception){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(LocalDateTime.now(), 500, "An unexpected error occurred", "Please contact support or try again later"));
     }
 }

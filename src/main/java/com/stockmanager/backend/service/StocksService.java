@@ -1,6 +1,7 @@
 package com.stockmanager.backend.service;
 
 
+import com.stockmanager.backend.dto.StockDTOPatch;
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
 import com.stockmanager.backend.exception.NotFoundException;
@@ -9,6 +10,8 @@ import com.stockmanager.backend.model.Stock;
 import com.stockmanager.backend.repository.CurrentStocks;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +24,13 @@ public class StocksService {
         this.currentStocks = currentStocks;
     }
 
-    public List<StockDTOResponse> getAllStocks(){
+    // GET METHODS //
+
+    public List<StockDTOResponse> getAllStocks() {
         List<Stock> allStocks = currentStocks.getAllStocks();
         List<StockDTOResponse> allStockDTO = new ArrayList<>();
 
-        for (Stock stock : allStocks){
+        for (Stock stock : allStocks) {
             allStockDTO.add(new StockDTOResponse(
                     stock.getTicker(),
                     stock.getCompanyName(),
@@ -42,31 +47,10 @@ public class StocksService {
         return allStockDTO;
     }
 
-    public String addStock(StockDTORequest stockDTORequest){
-        Double currentReturnTotal = (stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares();
-        currentStocks.getAllStocks().add(new Stock(
-                stockDTORequest.getTicker(),
-                stockDTORequest.getCompanyName(),
-                Sectors.fromDescription(stockDTORequest.getSector()),
-                stockDTORequest.getNoOfShares(),
-                stockDTORequest.getPurchasePrice(),
-                stockDTORequest.getCurrentPrice(),
-                stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice(),
-                currentReturnTotal,
-                stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares(),
-                stockDTORequest.getBuyDate()
-        ));
-        return "Stock " + stockDTORequest.getTicker() + " successfully added to the Database";
-    }
-
-    public String removeStock(String ticker){
-        return currentStocks.removeStock(ticker);
-    }
-
-    public List<StockDTOResponse> getStockBy(String ticker, String settore){
+    public List<StockDTOResponse> getStockBy(String ticker, String settore) {
         List<Stock> stocksBy = currentStocks.getStocksBy(ticker, settore);
         List<StockDTOResponse> stocksDTOBy = new ArrayList<>();
-        for (Stock stock: stocksBy){
+        for (Stock stock : stocksBy) {
             stocksDTOBy.add(new StockDTOResponse(
                     stock.getTicker(),
                     stock.getCompanyName(),
@@ -78,15 +62,95 @@ public class StocksService {
                     stock.getCurrentReturnTotal(),
                     stock.getCurrentTotal(),
                     stock.getBuyDate()
-                    ));
+            ));
 
         }
         return stocksDTOBy;
     }
 
-    public String updateStock(String ticker, StockDTORequest stockDTORequest){
-        if (ticker != null && ! ticker.isEmpty()){
-        Double currentReturnTotal = (stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares();
+    // POST METHODS //
+
+    public StockDTOResponse addStock(StockDTORequest stockDTORequest) {
+        BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+        Stock stock = new Stock(
+                stockDTORequest.getTicker(),
+                stockDTORequest.getCompanyName(),
+                Sectors.fromDescription(stockDTORequest.getSector()),
+                stockDTORequest.getNoOfShares(),
+                stockDTORequest.getPurchasePrice(),
+                stockDTORequest.getCurrentPrice(),
+                currentReturn,
+                currentReturnTotal,
+                currentTotal,
+                stockDTORequest.getBuyDate()
+        );
+        currentStocks.getAllStocks().add(stock);
+        return new StockDTOResponse(
+                stock.getTicker(),
+                stock.getCompanyName(),
+                stock.getSector().getDescription(),
+                stock.getNoOfShares(),
+                stock.getPurchasePrice(),
+                stock.getCurrentPrice(),
+                stock.getCurrentReturn(),
+                stock.getCurrentReturnTotal(),
+                stock.getCurrentTotal(),
+                stock.getBuyDate()
+        );
+
+    }
+
+    public List<StockDTOResponse> addStocks(List<StockDTORequest> stocksDTORequest) {
+        List<StockDTOResponse> addedStocks = new ArrayList<>();
+        for (StockDTORequest stockDTORequest : stocksDTORequest) {
+            BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+            Stock stock = new Stock(
+                    stockDTORequest.getTicker(),
+                    stockDTORequest.getCompanyName(),
+                    Sectors.fromDescription(stockDTORequest.getSector()),
+                    stockDTORequest.getNoOfShares(),
+                    stockDTORequest.getPurchasePrice(),
+                    stockDTORequest.getCurrentPrice(),
+                    currentReturn,
+                    currentReturnTotal,
+                    currentTotal,
+                    stockDTORequest.getBuyDate()
+            );
+            currentStocks.getAllStocks().add(stock);
+            addedStocks.add(new StockDTOResponse(
+                    stock.getTicker(),
+                    stock.getCompanyName(),
+                    stock.getSector().getDescription(),
+                    stock.getNoOfShares(),
+                    stock.getPurchasePrice(),
+                    stock.getCurrentPrice(),
+                    stock.getCurrentReturn(),
+                    stock.getCurrentReturnTotal(),
+                    stock.getCurrentTotal(),
+                    stock.getBuyDate()
+            ));
+        }
+        return addedStocks;
+    }
+
+
+    // DELETE METHODS //
+
+    public String removeStock(String ticker) {
+        return currentStocks.removeStock(ticker);
+    }
+
+
+    // UPDATE METHOD //
+
+    public StockDTOResponse updateStock(String ticker, StockDTORequest stockDTORequest) {
+        BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
         for (Stock stock : currentStocks.getAllStocks()) {
             if (stock.getTicker().equalsIgnoreCase(ticker)) {
                 stock.setTicker(stockDTORequest.getTicker());
@@ -94,63 +158,70 @@ public class StocksService {
                 stock.setSector(Sectors.fromDescription(stockDTORequest.getSector()));
                 stock.setNoOfShares(stockDTORequest.getNoOfShares());
                 stock.setPurchasePrice(stockDTORequest.getPurchasePrice());
-                stock.setCurrentPrice(stock.getCurrentPrice());
-                stock.setCurrentReturn(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice());
+                stock.setCurrentPrice(stockDTORequest.getCurrentPrice());
+                stock.setCurrentReturn(currentReturn);
                 stock.setCurrentReturnTotal(currentReturnTotal);
-                stock.setCurrentTotal(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares());
+                stock.setCurrentTotal(currentTotal);
                 stock.setBuyDate(stockDTORequest.getBuyDate());
-                }
+                return new StockDTOResponse(
+                        stock.getTicker(),
+                        stock.getCompanyName(),
+                        stock.getSector().getDescription(),
+                        stock.getNoOfShares(),
+                        stock.getPurchasePrice(),
+                        stock.getCurrentPrice(),
+                        stock.getCurrentReturn(),
+                        stock.getCurrentReturnTotal(),
+                        stock.getCurrentTotal(),
+                        stock.getBuyDate()
+                );
             }
-        return "Ticker " + ticker + " update successfully!";
-        }
 
-        throw new NotFoundException("Ticker" + ticker + " not found in the Database");
+        }
+        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");
     }
 
-    public String addStocks(List<StockDTORequest> stocksDTORequest){
-        for (StockDTORequest stockDTORequest : stocksDTORequest){
-            Double currentReturnTotal = (stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares();
-            currentStocks.getAllStocks().add(new Stock(
-                    stockDTORequest.getTicker(),
-                    stockDTORequest.getCompanyName(),
-                    Sectors.fromDescription(stockDTORequest.getSector()),
-                    stockDTORequest.getNoOfShares(),
-                    stockDTORequest.getPurchasePrice(),
-                    stockDTORequest.getCurrentPrice(),
-                    stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice(),
-                    currentReturnTotal,
-                    stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares(),
-                    stockDTORequest.getBuyDate()
-            ));
-            }
-            return "Stocks successfully added to the Database";
-        }
+    // PATCH METHOD //
 
-    public String patchStock(String ticker, StockDTORequest stockDTORequest){
-        for (Stock stock: currentStocks.getAllStocks()){
-            if (stock.getTicker().equalsIgnoreCase(ticker)){
-                stock.setTicker(stockDTORequest.getTicker() != null? stockDTORequest.getTicker() : stock.getTicker());
-                stock.setCompanyName(stockDTORequest.getCompanyName() != null ? stockDTORequest.getCompanyName() : stock.getCompanyName());
-                stock.setSector(stockDTORequest.getSector() != null ? Sectors.fromDescription(stockDTORequest.getSector()) : stock.getSector());
-                stock.setPurchasePrice(stockDTORequest.getPurchasePrice() != null ? stockDTORequest.getPurchasePrice() : stock.getPurchasePrice());
-                stock.setCurrentPrice(stockDTORequest.getCurrentPrice() != null ? stockDTORequest.getCurrentPrice() : stock.getCurrentPrice());
-                stock.setCurrentReturn(stockDTORequest.getCurrentPrice() != null && stockDTORequest.getPurchasePrice() != null ? stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice() : stock.getCurrentReturn());
+    public StockDTOResponse patchStock(String ticker, StockDTOPatch stockDTOPatch) {
+        for (Stock stock : currentStocks.getAllStocks()) {
+            if (stock.getTicker().equalsIgnoreCase(ticker)) {
+                stock.setTicker(stockDTOPatch.getTicker() != null ? stockDTOPatch.getTicker() : stock.getTicker());
+                stock.setCompanyName(stockDTOPatch.getCompanyName() != null ? stockDTOPatch.getCompanyName() : stock.getCompanyName());
+                stock.setSector(stockDTOPatch.getSector() != null ? Sectors.fromDescription(stockDTOPatch.getSector()) : stock.getSector());
+                stock.setPurchasePrice(stockDTOPatch.getPurchasePrice() != null ? stockDTOPatch.getPurchasePrice() : stock.getPurchasePrice());
+                stock.setCurrentPrice(stockDTOPatch.getCurrentPrice() != null ? stockDTOPatch.getCurrentPrice() : stock.getCurrentPrice());
+                stock.setCurrentReturn(stockDTOPatch.getCurrentPrice() != null && stockDTOPatch.getPurchasePrice() != null ?
+                        BigDecimal.valueOf(stockDTOPatch.getCurrentPrice() - stockDTOPatch.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP) :
+                        stock.getCurrentReturn());
                 stock.setCurrentReturnTotal(
-                        stockDTORequest.getCurrentPrice() != null &&
-                        stockDTORequest.getPurchasePrice() != null &&
-                        stockDTORequest.getNoOfShares() != null ?
-                        stockDTORequest.getNoOfShares() * (stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) :
-                        stock.getCurrentReturnTotal()
-                        );
-                stock.setCurrentTotal(
-                        stockDTORequest.getCurrentPrice() != null &&
-                        stockDTORequest.getNoOfShares() != null ?
-                        stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares() :
-                        stock.getCurrentTotal()
+                        stockDTOPatch.getCurrentPrice() != null &&
+                                stockDTOPatch.getPurchasePrice() != null &&
+                                stockDTOPatch.getNoOfShares() != null ?
+                                BigDecimal.valueOf(stockDTOPatch.getNoOfShares() * (stockDTOPatch.getCurrentPrice() - stockDTOPatch.getPurchasePrice())).setScale(2, RoundingMode.HALF_UP) :
+                                stock.getCurrentReturnTotal()
                 );
-                stock.setBuyDate(stockDTORequest.getBuyDate() != null ? stockDTORequest.getBuyDate() : stock.getBuyDate());
+                stock.setCurrentTotal(
+                        stockDTOPatch.getCurrentPrice() != null &&
+                                stockDTOPatch.getNoOfShares() != null ?
+                                BigDecimal.valueOf(stockDTOPatch.getCurrentPrice() * stockDTOPatch.getNoOfShares()).setScale(2, RoundingMode.HALF_UP) :
+                                stock.getCurrentTotal()
+                );
+                stock.setBuyDate(stockDTOPatch.getBuyDate() != null ? stockDTOPatch.getBuyDate() : stock.getBuyDate());
+                return new StockDTOResponse(
+                        stock.getTicker(),
+                        stock.getCompanyName(),
+                        stock.getSector().getDescription(),
+                        stock.getNoOfShares(),
+                        stock.getPurchasePrice(),
+                        stock.getCurrentPrice(),
+                        stock.getCurrentReturn(),
+                        stock.getCurrentReturnTotal(),
+                        stock.getCurrentTotal(),
+                        stock.getBuyDate()
+                );
             }
         }
-        return "Stock " + ticker + " successfully updated!";
+        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");
     }
 }

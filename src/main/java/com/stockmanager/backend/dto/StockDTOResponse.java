@@ -1,6 +1,7 @@
 package com.stockmanager.backend.dto;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class StockDTOResponse {
@@ -11,15 +12,15 @@ public class StockDTOResponse {
     private Double noOfShares;
     private Double purchasePrice;
     private Double currentPrice;
-    private Double currentReturn;
-    private Double currentReturnTotal;
-    private Double currentTotal;
+    private BigDecimal currentReturn;
+    private BigDecimal currentReturnTotal;
+    private BigDecimal currentTotal;
     private LocalDate buyDate;
 
     public StockDTOResponse() {
     }
 
-    public StockDTOResponse(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, Double currentReturn, Double currentReturnTotal, Double currentTotal, LocalDate buyDate) {
+    public StockDTOResponse(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
@@ -80,27 +81,27 @@ public class StockDTOResponse {
         this.currentPrice = currentPrice;
     }
 
-    public Double getCurrentReturn() {
+    public BigDecimal getCurrentReturn() {
         return currentReturn;
     }
 
-    public void setCurrentReturn(Double currentReturn) {
+    public void setCurrentReturn(BigDecimal currentReturn) {
         this.currentReturn = currentReturn;
     }
 
-    public Double getCurrentReturnTotal() {
+    public BigDecimal getCurrentReturnTotal() {
         return currentReturnTotal;
     }
 
-    public void setCurrentReturnTotal(Double currentReturnTotal) {
+    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
         this.currentReturnTotal = currentReturnTotal;
     }
 
-    public Double getCurrentTotal() {
+    public BigDecimal getCurrentTotal() {
         return currentTotal;
     }
 
-    public void setCurrentTotal(Double currentTotal) {
+    public void setCurrentTotal(BigDecimal currentTotal) {
         this.currentTotal = currentTotal;
     }
 

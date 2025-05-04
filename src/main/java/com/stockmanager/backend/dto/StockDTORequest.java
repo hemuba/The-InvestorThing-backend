@@ -7,13 +7,15 @@ import java.time.LocalDate;
 
 public class StockDTORequest {
 
-    @NotBlank(message = "Ticker cannot be null.")
+    @NotBlank(message = "Ticker cannot be empty.")
     private String ticker;
     private String companyName;
     private String sector;
     @NotNull(message = "Number of shares cannot be empty")
     private Double noOfShares;
+    @NotNull(message = "Purchase price cannot be empty")
     private Double purchasePrice;
+    @NotNull(message = "Current price cannot be empty")
     private Double currentPrice;
     private LocalDate buyDate;
 
@@ -30,11 +32,11 @@ public class StockDTORequest {
         this.buyDate = buyDate;
     }
 
-    public @NotBlank(message = "Ticker cannot be null.") String getTicker() {
+    public String getTicker() {
         return ticker;
     }
 
-    public void setTicker(@NotBlank(message = "Ticker cannot be null.") String ticker) {
+    public void setTicker(String ticker) {
         this.ticker = ticker;
     }
 
@@ -54,11 +56,11 @@ public class StockDTORequest {
         this.sector = sector;
     }
 
-    public @NotNull(message = "Number of shares cannot be empty") Double getNoOfShares() {
+    public Double getNoOfShares() {
         return noOfShares;
     }
 
-    public void setNoOfShares(@NotNull(message = "Number of shares cannot be empty") Double noOfShares) {
+    public void setNoOfShares(Double noOfShares) {
         this.noOfShares = noOfShares;
     }
 

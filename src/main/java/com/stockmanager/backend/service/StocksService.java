@@ -14,11 +14,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 @Service
 public class StocksService {
 
     private final CurrentStocks currentStocks;
+    private final Logger logger = LoggerFactory.getLogger(StocksService.class);
 
     public StocksService(CurrentStocks currentStocks) {
         this.currentStocks = currentStocks;
@@ -44,6 +47,7 @@ public class StocksService {
                     stock.getBuyDate()
             ));
         }
+        logger.info("Fetched all stocks, total: {}", allStockDTO.size());
         return allStockDTO;
     }
 
@@ -65,6 +69,7 @@ public class StocksService {
             ));
 
         }
+        logger.info("Total fetched stocks: {}", stocksDTOBy.size());
         return stocksDTOBy;
     }
 
@@ -87,6 +92,7 @@ public class StocksService {
                 stockDTORequest.getBuyDate()
         );
         currentStocks.getAllStocks().add(stock);
+        logger.info("Stock {} added to the database", stockDTORequest.getTicker());
         return new StockDTOResponse(
                 stock.getTicker(),
                 stock.getCompanyName(),
@@ -134,6 +140,7 @@ public class StocksService {
                     stock.getBuyDate()
             ));
         }
+        logger.info("Total stocks added to the Database: {}", addedStocks.size());
         return addedStocks;
     }
 
@@ -141,8 +148,10 @@ public class StocksService {
     // DELETE METHODS //
 
     public String removeStock(String ticker) {
+        logger.info("Stock {} removed from the Database", ticker.toUpperCase());
         return currentStocks.removeStock(ticker);
     }
+
 
 
     // UPDATE METHOD //
@@ -163,6 +172,7 @@ public class StocksService {
                 stock.setCurrentReturnTotal(currentReturnTotal);
                 stock.setCurrentTotal(currentTotal);
                 stock.setBuyDate(stockDTORequest.getBuyDate());
+                logger.info("Stock {} updated", stock.getTicker());
                 return new StockDTOResponse(
                         stock.getTicker(),
                         stock.getCompanyName(),
@@ -208,6 +218,7 @@ public class StocksService {
                                 stock.getCurrentTotal()
                 );
                 stock.setBuyDate(stockDTOPatch.getBuyDate() != null ? stockDTOPatch.getBuyDate() : stock.getBuyDate());
+                logger.info("Stock {} patched", stock.getTicker());
                 return new StockDTOResponse(
                         stock.getTicker(),
                         stock.getCompanyName(),

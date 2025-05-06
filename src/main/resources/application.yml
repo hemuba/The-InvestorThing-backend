@@ -1,0 +1,14 @@
+
+# SERVER ADDRESS TO BE REACHEABLE FROM OUTSIDE (DEFAULT IS 127.0.0.1, NOT REACHEABLE)
+server:
+  address: 0.0.0.0
+
+# LOGGER PROPERTIES
+logging:
+  level:
+    root: INFO
+    com.stockmanager: DEBUG
+  file:
+    name: C:/Users/devin/Desktop/spring-trainings/stockmanager-backend/logs/stockmanager.log
+  pattern:
+        file: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %level - %msg%n"

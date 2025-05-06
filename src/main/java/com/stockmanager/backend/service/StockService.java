@@ -15,11 +15,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 @Service
 public class StockService {
 
     private final StocksRepository stocksRepository;
+    private final Logger logger = LoggerFactory.getLogger(StockService.class);
 
     public StockService(StocksRepository stocksRepository) {
         this.stocksRepository = stocksRepository;
@@ -62,6 +65,7 @@ public class StockService {
                     stock.getBuyDate()
             ));
         }
+
         return stocksByDTO;
     }
 
@@ -85,6 +89,7 @@ public class StockService {
                 BigDecimal.valueOf(currentTotal).setScale(2, RoundingMode.HALF_UP),
                 stockToAdd.getBuyDate()
         );
+        logger.info("Stock {} successfully added to the Database", stock.getTicker());
         return new StockDTOResponse(
                 stock.getTicker(),
                 stock.getCompanyName(),
@@ -132,6 +137,7 @@ public class StockService {
                     stockDTORequest.getBuyDate()
             ));
         }
+        logger.info("Stocks {} added to the database", stocksDTORequest);
         return addedStocks;
     }
 
@@ -167,6 +173,7 @@ public class StockService {
                 );
             }
         }
+        logger.error("Ticker {} not found in the database", ticker);
         throw new NotFoundException("Ticker " + ticker + " not found in the database");
     }
 

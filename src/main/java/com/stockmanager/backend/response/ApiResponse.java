@@ -3,17 +3,16 @@ package com.stockmanager.backend.response;
 import java.time.LocalDateTime;
 
 public class ApiResponse {
-
     private LocalDateTime timestamp;
     private int status;
     private String message;
-    private Object obj;
+    private Object object;
 
-    public ApiResponse(LocalDateTime timestamp, int status, String message, Object obj) {
+    public ApiResponse(LocalDateTime timestamp, int status, String message, Object object) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
-        this.obj = obj;
+        this.object = object;
     }
 
     public int getStatus() {
@@ -32,19 +31,19 @@ public class ApiResponse {
         this.message = message;
     }
 
-    public Object getObj() {
-        return obj;
+    public Object getObject() {
+        return object;
     }
 
-    public void setObj(Object obj) {
-        this.obj = obj;
+    public void setObject(Object object) {
+        this.object = object;
     }
 
-    public LocalDateTime getTimestamp(){
-        return this.timestamp;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp){
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 }

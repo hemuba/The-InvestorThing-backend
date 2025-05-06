@@ -13,11 +13,11 @@ public class Stock {
     private Double purchasePrice;
     private Double currentPrice;
     private BigDecimal currentReturn;
-    private BigDecimal currentTotalReturn;
+    private BigDecimal currentReturnTotal;
     private BigDecimal currentTotal;
     private LocalDate buyDate;
 
-    public Stock(String ticker, String companyName, Sectors sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentTotalReturn, BigDecimal currentTotal, LocalDate buyDate) {
+    public Stock(String ticker, String companyName, Sectors sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
@@ -25,11 +25,10 @@ public class Stock {
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
         this.currentReturn = currentReturn;
-        this.currentTotalReturn = currentTotalReturn;
+        this.currentReturnTotal = currentReturnTotal;
         this.currentTotal = currentTotal;
         this.buyDate = buyDate;
     }
-
 
     public String getTicker() {
         return ticker;
@@ -79,42 +78,35 @@ public class Stock {
         this.currentPrice = currentPrice;
     }
 
-    public BigDecimal getCurrentReturn(){
-        if (this.currentPrice == null || this.purchasePrice == null) return null;
-        if (this.currentPrice.isNaN() || this.purchasePrice.isNaN()) return null;
-        return BigDecimal.valueOf(this.currentPrice - this.purchasePrice).setScale(2, RoundingMode.HALF_UP);
+    public BigDecimal getCurrentReturn() {
+        return this.currentReturn;
     }
 
-    public void setCurrentReturn(BigDecimal currentReturn){
+    public void setCurrentReturn(BigDecimal currentReturn) {
         this.currentReturn = currentReturn;
     }
 
-    public BigDecimal getCurrentTotalReturn(){
-        BigDecimal currentReturn = getCurrentReturn();
-        if (noOfShares == null || currentReturn == null) return null;
-        if (noOfShares.isNaN()) return null;
-        return currentReturn.multiply(BigDecimal.valueOf(noOfShares)).setScale(2, RoundingMode.HALF_UP);
+    public BigDecimal getCurrentReturnTotal() {
+        return this.currentReturnTotal;
     }
 
-    public void setCurrentTotalReturn(BigDecimal currentTotalReturn){
-        this.currentTotalReturn = currentTotalReturn;
+    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
+        this.currentReturnTotal = currentReturnTotal;
     }
 
-    public BigDecimal getCurrentTotal(){
-        if (noOfShares == null || currentPrice == null) return null;
-        if (noOfShares.isNaN() || currentPrice.isNaN()) return null;
-        return BigDecimal.valueOf(noOfShares * currentPrice).setScale(2, RoundingMode.HALF_UP);
+    public BigDecimal getCurrentTotal() {
+        return currentTotal;
     }
 
-    public void setCurrentTotal(BigDecimal currentTotal){
+    public void setCurrentTotal(BigDecimal currentTotal) {
         this.currentTotal = currentTotal;
     }
 
-    public LocalDate getBuyDate(){
-        return this.buyDate;
+    public LocalDate getBuyDate() {
+        return buyDate;
     }
 
-    public void setBuyDate(LocalDate buyDate){
+    public void setBuyDate(LocalDate buyDate) {
         this.buyDate = buyDate;
     }
 }

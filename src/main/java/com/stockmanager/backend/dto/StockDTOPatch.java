@@ -1,6 +1,7 @@
 package com.stockmanager.backend.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class StockDTOPatch {
 
@@ -73,11 +74,11 @@ public class StockDTOPatch {
         this.currentPrice = currentPrice;
     }
 
-    public LocalDate getBuyDate() {
-        return buyDate;
+    public LocalDate getBuyDate(){
+        return this.buyDate;
     }
 
-    public void setBuyDate(LocalDate buyDate) {
+    public void setBuyDate(LocalDate buyDate){
         this.buyDate = buyDate;
     }
 }

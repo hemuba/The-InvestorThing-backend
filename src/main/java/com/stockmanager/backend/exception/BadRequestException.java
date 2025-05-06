@@ -1,4 +1,4 @@
-package com.stockmanager.backend.exceptions;
+package com.stockmanager.backend.exception;
 
 public class BadRequestException extends RuntimeException {
 

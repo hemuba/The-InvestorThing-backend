@@ -1,4 +1,4 @@
-package com.stockmanager.backend.exceptions;
+package com.stockmanager.backend.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message){

@@ -1,4 +1,25 @@
-
-# SERVER ADDRESS TO BE REACHEABLE FROM OUTSIDE (DEFAULT IS 127.0.0.1, NOT REACHABLE)
-server:
-  address: 0.0.0.0
+#spring:
+#  profiles:
+#    active: dev
+#
+#---
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: dev
+#
+#server:
+#  address: 0.0.0.0
+#  port: 8081
+#
+#---
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: uat
+#
+#server:
+#  address: 127.100.100.100
+#  port: 8181

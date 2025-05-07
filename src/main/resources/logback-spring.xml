@@ -11,7 +11,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/stockmanager.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize>
+            <maxFileSize>10KB</maxFileSize>
             <maxHistory>20</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
         </rollingPolicy>

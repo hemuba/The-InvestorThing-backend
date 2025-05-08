@@ -6,6 +6,7 @@ import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
 import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
+import com.stockmanager.backend.mapper.StockMapper;
 import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
 import com.stockmanager.backend.repository.CurrentStocks;
@@ -38,18 +39,7 @@ public class StocksService {
         List<StockDTOResponse> allStockDTO = new ArrayList<>();
 
         for (Stock stock : allStocks) {
-            allStockDTO.add(new StockDTOResponse(
-                    stock.getTicker(),
-                    stock.getCompanyName(),
-                    stock.getSector().getDescription(),
-                    stock.getNoOfShares(),
-                    stock.getPurchasePrice(),
-                    stock.getCurrentPrice(),
-                    stock.getCurrentReturn(),
-                    stock.getCurrentReturnTotal(),
-                    stock.getCurrentTotal(),
-                    stock.getBuyDate()
-            ));
+            allStockDTO.add(StockMapper.toResponse(stock));
         }
         logger.info("Fetched all stocks, total: {}", allStockDTO.size());
         return allStockDTO;
@@ -59,19 +49,7 @@ public class StocksService {
         List<Stock> stocksBy = currentStocks.getStocksBy(ticker, sector);
         List<StockDTOResponse> stocksDTOBy = new ArrayList<>();
         for (Stock stock : stocksBy) {
-            stocksDTOBy.add(new StockDTOResponse(
-                    stock.getTicker(),
-                    stock.getCompanyName(),
-                    stock.getSector().getDescription(),
-                    stock.getNoOfShares(),
-                    stock.getPurchasePrice(),
-                    stock.getCurrentPrice(),
-                    stock.getCurrentReturn(),
-                    stock.getCurrentReturnTotal(),
-                    stock.getCurrentTotal(),
-                    stock.getBuyDate()
-            ));
-
+            stocksDTOBy.add(StockMapper.toResponse(stock));
         }
         logger.info("Total fetched stocks: {}", stocksDTOBy.size());
         return stocksDTOBy;
@@ -88,36 +66,10 @@ public class StocksService {
             throw new BadRequestException("Stock " + stockDTORequest.getTicker() + "not added to the database as it already exists. Try PUT or PATCH methods instead");
         }
 
-        BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-        Stock stock = new Stock(
-                stockDTORequest.getTicker(),
-                stockDTORequest.getCompanyName(),
-                Sectors.fromDescription(stockDTORequest.getSector()),
-                stockDTORequest.getNoOfShares(),
-                stockDTORequest.getPurchasePrice(),
-                stockDTORequest.getCurrentPrice(),
-                currentReturn,
-                currentReturnTotal,
-                currentTotal,
-                stockDTORequest.getBuyDate()
-        );
-
+        Stock stock = StockMapper.toEntity(stockDTORequest);
         currentStocks.getAllStocks().add(stock);
         logger.info("Stock {} added to the database", stockDTORequest.getTicker());
-        return new StockDTOResponse(
-                stock.getTicker(),
-                stock.getCompanyName(),
-                stock.getSector().getDescription(),
-                stock.getNoOfShares(),
-                stock.getPurchasePrice(),
-                stock.getCurrentPrice(),
-                stock.getCurrentReturn(),
-                stock.getCurrentReturnTotal(),
-                stock.getCurrentTotal(),
-                stock.getBuyDate()
-        );
+        return StockMapper.toResponse(stock);
 
     }
 
@@ -133,36 +85,11 @@ public class StocksService {
                 logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker());
                 continue;
             }
-            BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-            BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-            Stock stock = new Stock(
-                    stockDTORequest.getTicker(),
-                    stockDTORequest.getCompanyName(),
-                    Sectors.fromDescription(stockDTORequest.getSector()),
-                    stockDTORequest.getNoOfShares(),
-                    stockDTORequest.getPurchasePrice(),
-                    stockDTORequest.getCurrentPrice(),
-                    currentReturn,
-                    currentReturnTotal,
-                    currentTotal,
-                    stockDTORequest.getBuyDate()
-            );
 
-
+            Stock stock = StockMapper.toEntity(stockDTORequest);
             currentStocks.getAllStocks().add(stock);
-            addedStocks.add(new StockDTOResponse(
-                    stock.getTicker(),
-                    stock.getCompanyName(),
-                    stock.getSector().getDescription(),
-                    stock.getNoOfShares(),
-                    stock.getPurchasePrice(),
-                    stock.getCurrentPrice(),
-                    stock.getCurrentReturn(),
-                    stock.getCurrentReturnTotal(),
-                    stock.getCurrentTotal(),
-                    stock.getBuyDate()
-            ));
+            StockDTOResponse stockResponse = StockMapper.toResponse(stock);
+            addedStocks.add(stockResponse);
         }
         logger.info("Total stocks added to the Database: {}", addedStocks.size());
         return addedStocks;
@@ -197,18 +124,7 @@ public class StocksService {
                 stock.setCurrentTotal(currentTotal);
                 stock.setBuyDate(stockDTORequest.getBuyDate());
                 logger.info("Stock {} updated", stock.getTicker());
-                return new StockDTOResponse(
-                        stock.getTicker(),
-                        stock.getCompanyName(),
-                        stock.getSector().getDescription(),
-                        stock.getNoOfShares(),
-                        stock.getPurchasePrice(),
-                        stock.getCurrentPrice(),
-                        stock.getCurrentReturn(),
-                        stock.getCurrentReturnTotal(),
-                        stock.getCurrentTotal(),
-                        stock.getBuyDate()
-                );
+                return StockMapper.toResponse(stock);
             }
 
         }
@@ -220,41 +136,9 @@ public class StocksService {
     public StockDTOResponse patchStock(String ticker, StockDTOPatch stockDTOPatch) {
         for (Stock stock : currentStocks.getAllStocks()) {
             if (stock.getTicker().equalsIgnoreCase(ticker)) {
-                stock.setTicker(stockDTOPatch.getTicker() != null ? stockDTOPatch.getTicker() : stock.getTicker());
-                stock.setCompanyName(stockDTOPatch.getCompanyName() != null ? stockDTOPatch.getCompanyName() : stock.getCompanyName());
-                stock.setSector(stockDTOPatch.getSector() != null ? Sectors.fromDescription(stockDTOPatch.getSector()) : stock.getSector());
-                stock.setPurchasePrice(stockDTOPatch.getPurchasePrice() != null ? stockDTOPatch.getPurchasePrice() : stock.getPurchasePrice());
-                stock.setCurrentPrice(stockDTOPatch.getCurrentPrice() != null ? stockDTOPatch.getCurrentPrice() : stock.getCurrentPrice());
-                stock.setCurrentReturn(stockDTOPatch.getCurrentPrice() != null && stockDTOPatch.getPurchasePrice() != null ?
-                        BigDecimal.valueOf(stockDTOPatch.getCurrentPrice() - stockDTOPatch.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP) :
-                        stock.getCurrentReturn());
-                stock.setCurrentReturnTotal(
-                        stockDTOPatch.getCurrentPrice() != null &&
-                                stockDTOPatch.getPurchasePrice() != null &&
-                                stockDTOPatch.getNoOfShares() != null ?
-                                BigDecimal.valueOf(stockDTOPatch.getNoOfShares() * (stockDTOPatch.getCurrentPrice() - stockDTOPatch.getPurchasePrice())).setScale(2, RoundingMode.HALF_UP) :
-                                stock.getCurrentReturnTotal()
-                );
-                stock.setCurrentTotal(
-                        stockDTOPatch.getCurrentPrice() != null &&
-                                stockDTOPatch.getNoOfShares() != null ?
-                                BigDecimal.valueOf(stockDTOPatch.getCurrentPrice() * stockDTOPatch.getNoOfShares()).setScale(2, RoundingMode.HALF_UP) :
-                                stock.getCurrentTotal()
-                );
-                stock.setBuyDate(stockDTOPatch.getBuyDate() != null ? stockDTOPatch.getBuyDate() : stock.getBuyDate());
+                StockMapper.patchStock(stock, stockDTOPatch);
                 logger.info("Stock {} patched", stock.getTicker());
-                return new StockDTOResponse(
-                        stock.getTicker(),
-                        stock.getCompanyName(),
-                        stock.getSector().getDescription(),
-                        stock.getNoOfShares(),
-                        stock.getPurchasePrice(),
-                        stock.getCurrentPrice(),
-                        stock.getCurrentReturn(),
-                        stock.getCurrentReturnTotal(),
-                        stock.getCurrentTotal(),
-                        stock.getBuyDate()
-                );
+                return StockMapper.toResponse(stock);
             }
         }
         throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");

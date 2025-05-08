@@ -4,6 +4,7 @@ package com.stockmanager.backend.service;
 import com.stockmanager.backend.dto.StockDTOPatch;
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
+import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
@@ -14,6 +15,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -91,6 +95,11 @@ public class StocksService {
                 currentTotal,
                 stockDTORequest.getBuyDate()
         );
+        for (Stock existingStock : currentStocks.getAllStocks()) {
+            if (existingStock.getTicker().equalsIgnoreCase(stockDTORequest.getTicker())) {
+                throw new BadRequestException("Stock " + stockDTORequest.getTicker() + " already found in the database. Try update or patch method instead");
+            }
+        }
         currentStocks.getAllStocks().add(stock);
         logger.info("Stock {} added to the database", stockDTORequest.getTicker());
         return new StockDTOResponse(
@@ -110,7 +119,15 @@ public class StocksService {
 
     public List<StockDTOResponse> addStocks(List<StockDTORequest> stocksDTORequest) {
         List<StockDTOResponse> addedStocks = new ArrayList<>();
+        Set<String> existingTickers = currentStocks.getAllStocks().stream()
+                .map(s -> s.getTicker().toLowerCase())
+                .collect(Collectors.toSet());
         for (StockDTORequest stockDTORequest : stocksDTORequest) {
+            String tickerLow = stockDTORequest.getTicker().toLowerCase();
+            if (existingTickers.contains(tickerLow)) {
+                logger.warn("Ticker {} not added to the database as it already exists. Try update or patch method instead", stockDTORequest.getTicker());
+                continue;
+            }
             BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
             BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
             BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
@@ -151,7 +168,6 @@ public class StocksService {
         logger.info("Stock {} removed from the Database", ticker.toUpperCase());
         return currentStocks.removeStock(ticker);
     }
-
 
 
     // UPDATE METHOD //

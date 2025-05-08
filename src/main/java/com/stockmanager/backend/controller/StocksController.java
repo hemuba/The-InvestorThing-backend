@@ -61,7 +61,13 @@ public class StocksController {
     @PostMapping("/batch")
     public ResponseEntity<ApiResponse> addStocks(@Valid @RequestBody List<StockDTORequest> stocksDTORequest) {
         List<StockDTOResponse> obj = stocksService.addStocks(stocksDTORequest);
-        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "Stocks successfully added to the Database", obj));
+        if (obj.isEmpty()) {
+            return ResponseEntity.status(500).body(new ApiResponse(LocalDateTime.now(), 500, "No Stock(s) have been added to the Database, please check the logs", obj));
+        } else if (obj.size() != stocksDTORequest.size()) {
+            return ResponseEntity.status(207).body(new ApiResponse(LocalDateTime.now(), 201, "Not all the Stock(s) have been added to the Database, please check the if some are already existing", obj));
+        }
+
+        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "Stock(s) successfully added to the Database", obj));
     }
 
 

@@ -4,6 +4,7 @@ package com.stockmanager.backend.service;
 import com.stockmanager.backend.dto.StockDTOPatch;
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
+import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
@@ -14,6 +15,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -76,6 +80,14 @@ public class StocksService {
     // POST METHODS //
 
     public StockDTOResponse addStock(StockDTORequest stockDTORequest) {
+
+        Set<String> existingTickers = currentStocks.getAllStocks().stream()
+                .map(s -> s.getTicker().toLowerCase())
+                .collect(Collectors.toSet());
+        if (existingTickers.contains(stockDTORequest.getTicker().toLowerCase())){
+            throw new BadRequestException("Stock " + stockDTORequest.getTicker() + "not added to the database as it already exists. Try PUT or PATCH methods instead");
+        }
+
         BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
@@ -91,6 +103,7 @@ public class StocksService {
                 currentTotal,
                 stockDTORequest.getBuyDate()
         );
+
         currentStocks.getAllStocks().add(stock);
         logger.info("Stock {} added to the database", stockDTORequest.getTicker());
         return new StockDTOResponse(
@@ -109,8 +122,17 @@ public class StocksService {
     }
 
     public List<StockDTOResponse> addStocks(List<StockDTORequest> stocksDTORequest) {
+
+        Set<String> existingTickersLower = currentStocks.getAllStocks().stream()
+                .map(s -> s.getTicker().toLowerCase())
+                .collect(Collectors.toSet());
+
         List<StockDTOResponse> addedStocks = new ArrayList<>();
         for (StockDTORequest stockDTORequest : stocksDTORequest) {
+            if (existingTickersLower.contains(stockDTORequest.getTicker().toLowerCase())){
+                logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker());
+                continue;
+            }
             BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
             BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
             BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
@@ -126,6 +148,8 @@ public class StocksService {
                     currentTotal,
                     stockDTORequest.getBuyDate()
             );
+
+
             currentStocks.getAllStocks().add(stock);
             addedStocks.add(new StockDTOResponse(
                     stock.getTicker(),

@@ -62,7 +62,7 @@ public class StocksService {
                 .map(s -> s.getTicker().toLowerCase())
                 .collect(Collectors.toSet());
         if (existingTickers.contains(stockDTORequest.getTicker().toLowerCase())){
-            throw new BadRequestException("Stock " + stockDTORequest.getTicker() + "not added to the database as it already exists. Try PUT or PATCH methods instead");
+            throw new BadRequestException("Stock " + stockDTORequest.getTicker() + " not added to the database as it already exists. Try PUT or PATCH methods instead");
         }
 
         Stock stock = StockMapper.toEntity(stockDTORequest);

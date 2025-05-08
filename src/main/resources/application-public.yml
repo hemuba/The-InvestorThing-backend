@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: prod
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+server:
+  port: 8081
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: uat
+
+server:
+  port: 8181
+
+---
+
+spring:
+  activate:
+    on-profile: prod
+
+server:
+  port: 8080
+
+stockmanager:
+  author: Alessandro De Vincenti
+  version: 0.0.1
+  module: backend

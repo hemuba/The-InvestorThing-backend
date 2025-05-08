@@ -5,15 +5,14 @@ import com.stockmanager.backend.dto.StockDTOPatch;
 import com.stockmanager.backend.dto.StockDTORequest;
 import com.stockmanager.backend.dto.StockDTOResponse;
 import com.stockmanager.backend.exception.BadRequestException;
+import com.stockmanager.backend.exception.MultiStatusException;
 import com.stockmanager.backend.exception.NotFoundException;
+import com.stockmanager.backend.exception.UnprocessableEntityException;
 import com.stockmanager.backend.mapper.StockMapper;
-import com.stockmanager.backend.model.Sectors;
 import com.stockmanager.backend.model.Stock;
 import com.stockmanager.backend.repository.CurrentStocks;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -91,6 +90,12 @@ public class StocksService {
             StockDTOResponse stockResponse = StockMapper.toResponse(stock);
             addedStocks.add(stockResponse);
         }
+        if (addedStocks.isEmpty()) {
+            throw new UnprocessableEntityException("The request is properly formatted but it cannot be completed at this time.");
+        } else if (addedStocks.size() < stocksDTORequest.size()) {
+            throw new MultiStatusException("Not all the stocks requested have been added to the Database, requested: " + stocksDTORequest.size() + " -> added: " + addedStocks.size());
+
+        }
         logger.info("Total stocks added to the Database: {}", addedStocks.size());
         return addedStocks;
     }
@@ -108,25 +113,12 @@ public class StocksService {
     // UPDATE METHOD //
 
     public StockDTOResponse updateStock(String ticker, StockDTORequest stockDTORequest) {
-        BigDecimal currentReturn = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal currentReturnTotal = BigDecimal.valueOf((stockDTORequest.getCurrentPrice() - stockDTORequest.getPurchasePrice()) * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal currentTotal = BigDecimal.valueOf(stockDTORequest.getCurrentPrice() * stockDTORequest.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
         for (Stock stock : currentStocks.getAllStocks()) {
             if (stock.getTicker().equalsIgnoreCase(ticker)) {
-                stock.setTicker(stockDTORequest.getTicker());
-                stock.setCompanyName(stockDTORequest.getCompanyName());
-                stock.setSector(Sectors.fromDescription(stockDTORequest.getSector()));
-                stock.setNoOfShares(stockDTORequest.getNoOfShares());
-                stock.setPurchasePrice(stockDTORequest.getPurchasePrice());
-                stock.setCurrentPrice(stockDTORequest.getCurrentPrice());
-                stock.setCurrentReturn(currentReturn);
-                stock.setCurrentReturnTotal(currentReturnTotal);
-                stock.setCurrentTotal(currentTotal);
-                stock.setBuyDate(stockDTORequest.getBuyDate());
+               StockMapper.updateStock(stock, stockDTORequest);
                 logger.info("Stock {} updated", stock.getTicker());
                 return StockMapper.toResponse(stock);
             }
-
         }
         throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");
     }

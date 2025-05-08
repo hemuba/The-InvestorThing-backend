@@ -75,4 +75,19 @@ public class StockMapper {
 
     }
 
+    public static void updateStock(Stock stock, StockDTORequest update){
+        BigDecimal currentReturn = BigDecimal.valueOf(stock.getCurrentPrice() - stock.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentReturnTotal = BigDecimal.valueOf((stock.getCurrentPrice() - stock.getPurchasePrice()) * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentTotal = BigDecimal.valueOf(stock.getCurrentPrice() * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
+        stock.setTicker(update.getTicker());
+        stock.setCompanyName(update.getCompanyName());
+        stock.setSector(Sectors.fromDescription(update.getSector()));
+        stock.setNoOfShares(update.getNoOfShares());
+        stock.setPurchasePrice(update.getPurchasePrice());
+        stock.setCurrentPrice(update.getCurrentPrice());
+        stock.setCurrentReturn(currentReturn);
+        stock.setCurrentReturnTotal(currentReturnTotal);
+        stock.setCurrentTotal(currentTotal);
+        stock.setBuyDate(update.getBuyDate());
+    }
 }

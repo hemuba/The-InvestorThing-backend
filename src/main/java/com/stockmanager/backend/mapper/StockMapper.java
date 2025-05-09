@@ -33,7 +33,7 @@ public class StockMapper {
         BigDecimal currentReturn = BigDecimal.valueOf(stock.getCurrentPrice() - stock.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentReturnTotal = BigDecimal.valueOf((stock.getCurrentPrice() - stock.getPurchasePrice()) * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = BigDecimal.valueOf(stock.getCurrentPrice() * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-        return new Stock(stock.getTicker(),
+        return new Stock(stock.getTicker().toUpperCase(),
                 stock.getCompanyName(),
                 Sectors.fromDescription(stock.getSector()),
                 stock.getNoOfShares(),
@@ -47,7 +47,7 @@ public class StockMapper {
 
     public static void patchStock(Stock stock, StockDTOPatch patch){
         stock.setTicker(patch.getTicker() != null ?
-                patch.getTicker() :
+                patch.getTicker().toUpperCase() :
                 stock.getTicker());
         stock.setCompanyName(patch.getCompanyName() != null ?
                 patch.getCompanyName() :
@@ -79,7 +79,7 @@ public class StockMapper {
         BigDecimal currentReturn = BigDecimal.valueOf(stock.getCurrentPrice() - stock.getPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentReturnTotal = BigDecimal.valueOf((stock.getCurrentPrice() - stock.getPurchasePrice()) * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = BigDecimal.valueOf(stock.getCurrentPrice() * stock.getNoOfShares()).setScale(2, RoundingMode.HALF_UP);
-        stock.setTicker(update.getTicker());
+        stock.setTicker(update.getTicker().toUpperCase());
         stock.setCompanyName(update.getCompanyName());
         stock.setSector(Sectors.fromDescription(update.getSector()));
         stock.setNoOfShares(update.getNoOfShares());

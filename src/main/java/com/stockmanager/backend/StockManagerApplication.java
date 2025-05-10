@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class
 StockManagerApplication {
-    private final Logger logger = LoggerFactory.getLogger(StockManagerApplication.class);
+    private final static Logger logger = LoggerFactory.getLogger(StockManagerApplication.class);
 
     @Value(("${stockmanager.author}"))
     private String author;

@@ -3,14 +3,19 @@ package com.stockmanager.backend.repository;
 import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.model.Stock;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Repository
 public class CurrentStocks {
 
     List<Stock> currentStocks = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(CurrentStocks.class);
 
 
     public List<Stock> getAllStocks(){
@@ -40,10 +45,13 @@ public class CurrentStocks {
     public String removeStock(String ticker) {
         boolean removed = currentStocks.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
         if (removed) {
+            logger.info("Stock {} removed from the Database", ticker.toUpperCase());
             return "Ticker " + ticker.toUpperCase() + " successfully removed from Database.";
+
         }
         else{
-            throw new NotFoundException("Ticker " + ticker + " not found in the Database" );
+            logger.error("Ticker {} not found in the Database", ticker.toUpperCase());
+            throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database" );
         }
     }
 

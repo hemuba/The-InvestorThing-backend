@@ -19,15 +19,30 @@ class StocksServiceTest {
     CurrentStocks currentStocks = new CurrentStocks();
     StocksService stocksService = new StocksService(currentStocks);
 
-    StockDTORequest stock = new StockDTORequest(
+    StockDTORequest req = new StockDTORequest(
             "nvda", "Nvidia", "Technology", 10.00, 50.00, 115.00, null
     );
 
-    stocksService.addStock(stock);
+    StockDTOResponse resp = stocksService.addStock(req);
 
-    assertEquals("NVDA", stock.getTicker());
+    assertEquals("NVDA", resp.getTicker());
   }
 
+  @Test
+  void removeStock_ShouldThrowException(){
+    CurrentStocks currentStocks = new CurrentStocks();
+    StocksService stocksService = new StocksService(currentStocks);
+
+    StockDTORequest req = new StockDTORequest(
+            "nvda", "Nvidia", "Technology", 10.00, 50.00, 115.00, null
+    );
+
+    StockDTOResponse resp = stocksService.addStock(req);
+
+
+    assertThrows(NotFoundException.class, () ->  stocksService.removeStock("TEST"));
+
+  }
 
 
 }

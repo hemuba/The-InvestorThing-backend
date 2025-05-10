@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 public class StocksService {
 
     private final CurrentStocks currentStocks;
-    private final Logger logger = LoggerFactory.getLogger(StocksService.class);
+    private final static Logger logger = LoggerFactory.getLogger(StocksService.class);
 
     public StocksService(CurrentStocks currentStocks) {
         this.currentStocks = currentStocks;
@@ -67,7 +67,7 @@ public class StocksService {
 
         Stock stock = StockMapper.toEntity(stockDTORequest);
         currentStocks.getAllStocks().add(stock);
-        logger.info("Stock {} added to the database", stockDTORequest.getTicker());
+        logger.info("Stock {} added to the database", stock.getTicker());
         return StockMapper.toResponse(stock);
 
     }
@@ -81,7 +81,7 @@ public class StocksService {
         List<StockDTOResponse> addedStocks = new ArrayList<>();
         for (StockDTORequest stockDTORequest : stocksDTORequest) {
             if (existingTickersLower.contains(stockDTORequest.getTicker().toLowerCase())){
-                logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker());
+                logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker().toUpperCase());
                 continue;
             }
 
@@ -104,7 +104,6 @@ public class StocksService {
     // DELETE METHODS //
 
     public String removeStock(String ticker) {
-        logger.info("Stock {} removed from the Database", ticker.toUpperCase());
         return currentStocks.removeStock(ticker);
     }
 

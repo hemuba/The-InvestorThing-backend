@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 public class StocksService {
 
     private final CurrentStocks currentStocks;
-    private final Logger logger = LoggerFactory.getLogger(StocksService.class);
+    private static final Logger logger = LoggerFactory.getLogger(StocksService.class);
 
     public StocksService(CurrentStocks currentStocks) {
         this.currentStocks = currentStocks;
@@ -62,12 +62,12 @@ public class StocksService {
                 .map(s -> s.getTicker().toLowerCase())
                 .collect(Collectors.toSet());
         if (existingTickers.contains(stockDTORequest.getTicker().toLowerCase())){
-            throw new BadRequestException("Stock " + stockDTORequest.getTicker() + " not added to the database as it already exists. Try PUT or PATCH methods instead");
+            throw new BadRequestException("POST FAILED - Stock " + stockDTORequest.getTicker() + " not added to the database as it already exists. Try PUT or PATCH methods instead");
         }
 
         Stock stock = StockMapper.toEntity(stockDTORequest);
         currentStocks.getAllStocks().add(stock);
-        logger.info("Stock {} added to the database", stockDTORequest.getTicker());
+        logger.info("POST OK - Stock {} added to the database", stockDTORequest.getTicker());
         return StockMapper.toResponse(stock);
 
     }
@@ -81,22 +81,22 @@ public class StocksService {
         List<StockDTOResponse> addedStocks = new ArrayList<>();
         for (StockDTORequest stockDTORequest : stocksDTORequest) {
             if (existingTickersLower.contains(stockDTORequest.getTicker().toLowerCase())){
-                logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker());
+                logger.warn("POST FAILED - Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker());
                 continue;
             }
-
+            logger.info("POST OK - Stock {} added to the Database ", stockDTORequest.getTicker());
             Stock stock = StockMapper.toEntity(stockDTORequest);
             currentStocks.getAllStocks().add(stock);
             StockDTOResponse stockResponse = StockMapper.toResponse(stock);
             addedStocks.add(stockResponse);
         }
         if (addedStocks.isEmpty()) {
-            throw new UnprocessableEntityException("The request is properly formatted but it cannot be completed at this time.");
+            throw new UnprocessableEntityException("POST BATCH FAILED - The request is properly formatted but it cannot be completed at this time.");
         } else if (addedStocks.size() < stocksDTORequest.size()) {
-            throw new MultiStatusException("Not all the stocks requested have been added to the Database, requested: " + stocksDTORequest.size() + " -> added: " + addedStocks.size());
+            throw new MultiStatusException("POST BATCH PARTIALLY FAILED - Not all the stocks requested have been added to the Database, requested: " + stocksDTORequest.size() + " -> added: " + addedStocks.size());
 
         }
-        logger.info("Total stocks added to the Database: {}", addedStocks.size());
+        logger.info("POST BATCH OK - Total stocks added to the Database: {}", addedStocks.size());
         return addedStocks;
     }
 
@@ -104,7 +104,6 @@ public class StocksService {
     // DELETE METHODS //
 
     public String removeStock(String ticker) {
-        logger.info("Stock {} removed from the Database", ticker.toUpperCase());
         return currentStocks.removeStock(ticker);
     }
 
@@ -116,11 +115,11 @@ public class StocksService {
         for (Stock stock : currentStocks.getAllStocks()) {
             if (stock.getTicker().equalsIgnoreCase(ticker)) {
                StockMapper.updateStock(stock, stockDTORequest);
-                logger.info("Stock {} updated", stock.getTicker());
+                logger.info("PUT OK - Stock {} updated", stock.getTicker());
                 return StockMapper.toResponse(stock);
             }
         }
-        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");
+        throw new NotFoundException("PUT FAILED - Ticker " + ticker.toUpperCase() + " not found in the Database");
     }
 
     // PATCH METHOD //
@@ -133,6 +132,6 @@ public class StocksService {
                 return StockMapper.toResponse(stock);
             }
         }
-        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in the Database");
+        throw new NotFoundException("PATCH FAILED - Ticker " + ticker.toUpperCase() + " not found in the Database");
     }
 }

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 @SpringBootApplication
 public class StockManagerApplication {
 
-	private static Logger logger = LoggerFactory.getLogger(StockManagerApplication.class);
+	private static final Logger logger = LoggerFactory.getLogger(StockManagerApplication.class);
 
 	@Value("${stockmanager.version}")
 	private String version;

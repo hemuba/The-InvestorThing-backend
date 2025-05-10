@@ -50,6 +50,13 @@ class StocksServiceTest {
     CurrentStocks currentStocks = new CurrentStocks();
     StocksService stocksService = new StocksService(currentStocks);
 
+    StockDTORequest req = new StockDTORequest(
+
+            "NVDA", "Nvidia", "Technology", 10.0, 150.0, 170.0, null
+    );
+
+    StockDTOResponse resp = stocksService.addStock(req);
+
     assertThrows(NotFoundException.class, () -> stocksService.removeStock("TEST")); // check if it fails with a ticker which does not exists
   }
 

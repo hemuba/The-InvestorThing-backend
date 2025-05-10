@@ -80,7 +80,8 @@ public class StocksService {
 
         List<StockDTOResponse> addedStocks = new ArrayList<>();
         for (StockDTORequest stockDTORequest : stocksDTORequest) {
-            if (existingTickersLower.contains(stockDTORequest.getTicker().toLowerCase())){
+            String tickerLower = stockDTORequest.getTicker().toLowerCase();
+            if (existingTickersLower.contains(tickerLower)){
                 logger.warn("Stock {} not added to the database as it already exists. Try PUT or PATCH methods instead", stockDTORequest.getTicker().toUpperCase());
                 continue;
             }

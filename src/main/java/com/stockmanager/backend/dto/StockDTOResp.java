@@ -1,35 +1,21 @@
-package com.stockmanager.backend.model;
+package com.stockmanager.backend.dto;
 
+public class StockDTOResp {
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "STOCKS", schema = "IM")
-public class Stock {
-
-    @Id
-    @Column(name = "TICKER")
     private String ticker;
 
-    @Column(name = "COMPANY_NAME")
     private String companyName;
 
-    @Column(name = "EXCHANGE")
     private String exchange;
 
-    @Column(name = "SECTOR")
     private String sector;
 
-    @Column(name = "CURRENCY")
     private String currency;
 
-    public Stock() {
+    public StockDTOResp() {
     }
 
-    public Stock(String ticker, String companyName, String exchange, String sector, String currency) {
+    public StockDTOResp(String ticker, String companyName, String exchange, String sector, String currency) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.exchange = exchange;

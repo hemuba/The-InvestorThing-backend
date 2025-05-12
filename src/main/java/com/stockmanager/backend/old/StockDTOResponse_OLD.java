@@ -1,34 +1,35 @@
-package com.stockmanager.backend.dto;
+package com.stockmanager.backend.old;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class StockDTORequest {
+public class StockDTOResponse_OLD {
 
-    @NotBlank(message = "Ticker cannot be empty.")
     private String ticker;
     private String companyName;
     private String sector;
-    @NotNull(message = "Number of shares cannot be empty")
     private Double noOfShares;
-    @NotNull(message = "Purchase price cannot be empty")
     private Double purchasePrice;
-    @NotNull(message = "Current price cannot be empty")
     private Double currentPrice;
+    private BigDecimal currentReturn;
+    private BigDecimal currentReturnTotal;
+    private BigDecimal currentTotal;
     private LocalDate buyDate;
 
-    public StockDTORequest() {
+    public StockDTOResponse_OLD() {
     }
 
-    public StockDTORequest(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
+    public StockDTOResponse_OLD(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
         this.noOfShares = noOfShares;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
+        this.currentReturn = currentReturn;
+        this.currentReturnTotal = currentReturnTotal;
+        this.currentTotal = currentTotal;
         this.buyDate = buyDate;
     }
 
@@ -41,7 +42,7 @@ public class StockDTORequest {
     }
 
     public String getCompanyName() {
-        return this.companyName;
+        return companyName;
     }
 
     public void setCompanyName(String companyName) {
@@ -60,7 +61,7 @@ public class StockDTORequest {
         return noOfShares;
     }
 
-    public void setNoOfShares(Double noOfShares) {
+    public void setNoOfShares (Double noOfShares) {
         this.noOfShares = noOfShares;
     }
 
@@ -78,6 +79,30 @@ public class StockDTORequest {
 
     public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    public BigDecimal getCurrentReturn() {
+        return currentReturn;
+    }
+
+    public void setCurrentReturn(BigDecimal currentReturn) {
+        this.currentReturn = currentReturn;
+    }
+
+    public BigDecimal getCurrentReturnTotal() {
+        return currentReturnTotal;
+    }
+
+    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
+        this.currentReturnTotal = currentReturnTotal;
+    }
+
+    public BigDecimal getCurrentTotal() {
+        return currentTotal;
+    }
+
+    public void setCurrentTotal(BigDecimal currentTotal) {
+        this.currentTotal = currentTotal;
     }
 
     public LocalDate getBuyDate() {

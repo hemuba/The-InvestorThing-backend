@@ -1,8 +1,7 @@
-package com.stockmanager.backend.repository;
+package com.stockmanager.backend.old;
 
 import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
-import com.stockmanager.backend.model.Stock;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,17 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Repository
-public class CurrentStocks {
+public class CurrentStocks_OLD {
 
-    List<Stock> currentStocks = new ArrayList<>();
-    private static final Logger logger = LoggerFactory.getLogger(CurrentStocks.class);
+    List<Stock_OLD> currentStockOLDS = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(CurrentStocks_OLD.class);
 
 
-    public List<Stock> getAllStocks(){
-        return this.currentStocks;
+    public List<Stock_OLD> getAllStocks(){
+        return this.currentStockOLDS;
     }
 
-    public List<Stock> getStocksBy(String ticker, String sector) {
+    public List<Stock_OLD> getStocksBy(String ticker, String sector) {
         boolean tickerInvalid = ticker == null || ticker.isBlank();
         boolean sectorInvalid = sector == null || sector.isBlank();
 
@@ -29,7 +28,7 @@ public class CurrentStocks {
             throw new BadRequestException("GET FAILED - You must provide at least one non-empty parameter: 'ticker' or 'sector'.");
         }
 
-        List<Stock> result = currentStocks.stream()
+        List<Stock_OLD> result = currentStockOLDS.stream()
                 .filter(s -> !tickerInvalid && s.getTicker().equalsIgnoreCase(ticker) || tickerInvalid)
                 .filter(s -> !sectorInvalid && s.getSector().getDescription().equalsIgnoreCase(sector) || sectorInvalid)
                 .toList();
@@ -42,9 +41,9 @@ public class CurrentStocks {
     }
 
     public String removeStock(String ticker) {
-        boolean removed = currentStocks.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
+        boolean removed = currentStockOLDS.removeIf(s -> s.getTicker().equalsIgnoreCase(ticker));
         if (removed) {
-            logger.info("DELETE TICKER OK - Stock {} removed from the Database.", ticker.toUpperCase() );
+            logger.info("DELETE TICKER OK - Stock_OLD {} removed from the Database.", ticker.toUpperCase() );
             return "Ticker " + ticker.toUpperCase() + " successfully removed from Database.";
         }
         else{

@@ -1,35 +1,24 @@
-package com.stockmanager.backend.model;
+package com.stockmanager.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class StockDTOReq {
 
-@Entity
-@Table(name = "STOCKS", schema = "IM")
-public class Stock {
-
-    @Id
-    @Column(name = "TICKER")
+    @NotBlank(message = "Ticker cannot be blank")
     private String ticker;
 
-    @Column(name = "COMPANY_NAME")
     private String companyName;
 
-    @Column(name = "EXCHANGE")
     private String exchange;
 
-    @Column(name = "SECTOR")
     private String sector;
 
-    @Column(name = "CURRENCY")
     private String currency;
 
-    public Stock() {
+    public StockDTOReq() {
     }
 
-    public Stock(String ticker, String companyName, String exchange, String sector, String currency) {
+    public StockDTOReq(String ticker, String companyName, String exchange, String sector, String currency) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.exchange = exchange;
@@ -37,11 +26,11 @@ public class Stock {
         this.currency = currency;
     }
 
-    public String getTicker() {
+    public @NotBlank(message = "Ticker cannot be blank") String getTicker() {
         return ticker;
     }
 
-    public void setTicker(String ticker) {
+    public void setTicker(@NotBlank(message = "Ticker cannot be blank") String ticker) {
         this.ticker = ticker;
     }
 

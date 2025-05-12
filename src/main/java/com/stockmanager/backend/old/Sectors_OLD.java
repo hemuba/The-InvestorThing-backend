@@ -1,8 +1,8 @@
-package com.stockmanager.backend.model;
+package com.stockmanager.backend.old;
 
 import com.stockmanager.backend.exception.NotFoundException;
 
-public enum Sectors {
+public enum Sectors_OLD {
     TECHNOLOGY("Technology"),
     ENERGY("Energy"),
     HEALTHCARE("Healthcare"),
@@ -11,7 +11,7 @@ public enum Sectors {
 
     final String description;
 
-    Sectors(String description) {
+    Sectors_OLD(String description) {
         this.description = description;
     }
 
@@ -19,8 +19,8 @@ public enum Sectors {
         return this.description;
     }
 
-    public static Sectors fromDescription(String description){
-        for (Sectors sector: Sectors.values()){
+    public static Sectors_OLD fromDescription(String description){
+        for (Sectors_OLD sector: Sectors_OLD.values()){
             if (sector.getDescription().equalsIgnoreCase(description)){
                 return sector;
             }

@@ -1,27 +1,31 @@
-package com.stockmanager.backend.dto;
+package com.stockmanager.backend.old;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class StockDTOPatch {
+public class Stock_OLD {
 
     private String ticker;
     private String companyName;
-    private String sector;
+    private Sectors_OLD sector;
     private Double noOfShares;
     private Double purchasePrice;
     private Double currentPrice;
+    private BigDecimal currentReturn;
+    private BigDecimal currentReturnTotal;
+    private BigDecimal currentTotal;
     private LocalDate buyDate;
 
-    public StockDTOPatch() {
-    }
-
-    public StockDTOPatch(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
+    public Stock_OLD(String ticker, String companyName, Sectors_OLD sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
         this.noOfShares = noOfShares;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
+        this.currentReturn = currentReturn;
+        this.currentReturnTotal = currentReturnTotal;
+        this.currentTotal = currentTotal;
         this.buyDate = buyDate;
     }
 
@@ -41,11 +45,11 @@ public class StockDTOPatch {
         this.companyName = companyName;
     }
 
-    public String getSector() {
+    public Sectors_OLD getSector() {
         return sector;
     }
 
-    public void setSector(String sector) {
+    public void setSector(Sectors_OLD sector) {
         this.sector = sector;
     }
 
@@ -73,11 +77,35 @@ public class StockDTOPatch {
         this.currentPrice = currentPrice;
     }
 
-    public LocalDate getBuyDate(){
-        return this.buyDate;
+    public BigDecimal getCurrentReturn() {
+        return this.currentReturn;
     }
 
-    public void setBuyDate(LocalDate buyDate){
+    public void setCurrentReturn(BigDecimal currentReturn) {
+        this.currentReturn = currentReturn;
+    }
+
+    public BigDecimal getCurrentReturnTotal() {
+        return this.currentReturnTotal;
+    }
+
+    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
+        this.currentReturnTotal = currentReturnTotal;
+    }
+
+    public BigDecimal getCurrentTotal() {
+        return currentTotal;
+    }
+
+    public void setCurrentTotal(BigDecimal currentTotal) {
+        this.currentTotal = currentTotal;
+    }
+
+    public LocalDate getBuyDate() {
+        return buyDate;
+    }
+
+    public void setBuyDate(LocalDate buyDate) {
         this.buyDate = buyDate;
     }
 }

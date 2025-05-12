@@ -4,7 +4,7 @@ This is the backend service for the StockManager project, developed with Java an
 
 ## Overview
 
-StockManager is a work-in-progress backend REST API for managing stock investments.  
+StockManager is a work-in-progress backend REST API for managing stockOLD investments.  
 It is part of a larger fullstack project that will include:
 
 - A dedicated frontend (planned)
@@ -48,11 +48,11 @@ The goal of this repository is to grow alongside my learning path and progressiv
 |--------|-----------------------|---------------------------------|
 | GET    | `/stocks`             | Get all stocks                  |
 | GET    | `/stocks/by`          | Filter stocks by ticker/sector  |
-| POST   | `/stocks`             | Add a single stock              |
+| POST   | `/stocks`             | Add a single stockOLD              |
 | POST   | `/stocks/batch`       | Add multiple stocks             |
-| DELETE | `/stocks/{ticker}`    | Delete a stock by ticker        |
-| PUT    | `/stocks/{ticker}`    | Full update of a stock          |
-| PATCH  | `/stocks/{ticker}`    | Partial update of a stock       |
+| DELETE | `/stocks/{ticker}`    | Delete a stockOLD by ticker        |
+| PUT    | `/stocks/{ticker}`    | Full update of a stockOLD          |
+| PATCH  | `/stocks/{ticker}`    | Partial update of a stockOLD       |
 
 ---
 

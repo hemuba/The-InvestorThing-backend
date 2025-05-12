@@ -1,10 +1,8 @@
-package com.stockmanager.backend.dto;
+package com.stockmanager.backend.old;
 
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class StockDTOResponse {
+public class StockDTOPatch_OLD {
 
     private String ticker;
     private String companyName;
@@ -12,24 +10,18 @@ public class StockDTOResponse {
     private Double noOfShares;
     private Double purchasePrice;
     private Double currentPrice;
-    private BigDecimal currentReturn;
-    private BigDecimal currentReturnTotal;
-    private BigDecimal currentTotal;
     private LocalDate buyDate;
 
-    public StockDTOResponse() {
+    public StockDTOPatch_OLD() {
     }
 
-    public StockDTOResponse(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
+    public StockDTOPatch_OLD(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
         this.noOfShares = noOfShares;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
-        this.currentReturn = currentReturn;
-        this.currentReturnTotal = currentReturnTotal;
-        this.currentTotal = currentTotal;
         this.buyDate = buyDate;
     }
 
@@ -61,7 +53,7 @@ public class StockDTOResponse {
         return noOfShares;
     }
 
-    public void setNoOfShares (Double noOfShares) {
+    public void setNoOfShares(Double noOfShares) {
         this.noOfShares = noOfShares;
     }
 
@@ -81,35 +73,11 @@ public class StockDTOResponse {
         this.currentPrice = currentPrice;
     }
 
-    public BigDecimal getCurrentReturn() {
-        return currentReturn;
+    public LocalDate getBuyDate(){
+        return this.buyDate;
     }
 
-    public void setCurrentReturn(BigDecimal currentReturn) {
-        this.currentReturn = currentReturn;
-    }
-
-    public BigDecimal getCurrentReturnTotal() {
-        return currentReturnTotal;
-    }
-
-    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
-        this.currentReturnTotal = currentReturnTotal;
-    }
-
-    public BigDecimal getCurrentTotal() {
-        return currentTotal;
-    }
-
-    public void setCurrentTotal(BigDecimal currentTotal) {
-        this.currentTotal = currentTotal;
-    }
-
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
+    public void setBuyDate(LocalDate buyDate){
         this.buyDate = buyDate;
     }
 }

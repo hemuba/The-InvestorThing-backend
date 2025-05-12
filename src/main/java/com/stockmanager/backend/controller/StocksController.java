@@ -1,9 +1,12 @@
 package com.stockmanager.backend.controller;
 
+import com.stockmanager.backend.dto.MyStockDTOReq;
 import com.stockmanager.backend.dto.MyStockDTOResp;
+import com.stockmanager.backend.dto.StockDTOReq;
 import com.stockmanager.backend.dto.StockDTOResp;
 import com.stockmanager.backend.response.ApiResponse;
 import com.stockmanager.backend.service.StocksService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
@@ -56,6 +59,22 @@ public class StocksController {
     public ResponseEntity<ApiResponse> getMyStockByTicker(@RequestParam String ticker){
         MyStockDTOResp myStock = stocksService.getMyStockByTicker(ticker);
         return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Stock " + ticker.toUpperCase(), myStock));
+    }
+
+        // DELETE from CURRENT_STOCKS
+
+    @DeleteMapping("/my-stocks/{ticker}")
+    public ResponseEntity<ApiResponse> deleteFromMyStocks(@PathVariable String ticker){
+        String message = stocksService.deleteFromCurrentStocks(ticker);
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, message, stocksService.getAllMyStocks()));
+    }
+
+        // POST to CURRENT_STOCKS
+
+    @PostMapping("/my-stocks/add-stock")
+    public ResponseEntity<ApiResponse> addToMyStock(@Valid @RequestBody MyStockDTOReq myStockDTOReq){
+       MyStockDTOResp obj = stocksService.addToMyStocks(myStockDTOReq);
+        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "Stock " + myStockDTOReq.getTicker() + " added to your wallet!", obj));
     }
 
 }

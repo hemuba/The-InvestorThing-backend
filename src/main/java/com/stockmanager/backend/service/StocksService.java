@@ -1,16 +1,21 @@
 package com.stockmanager.backend.service;
 
 
+import com.stockmanager.backend.dto.MyStockDTOReq;
 import com.stockmanager.backend.dto.MyStockDTOResp;
 import com.stockmanager.backend.dto.StockDTOResp;
+import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.mapper.StockMapper;
 import com.stockmanager.backend.model.MyStock;
 import com.stockmanager.backend.repository.MyStocksRepository;
 import com.stockmanager.backend.repository.StocksRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.stockmanager.backend.model.Stock;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -60,6 +65,38 @@ public class StocksService {
                 .orElseThrow( () -> new NotFoundException("Stock " + ticker + " not found in the Database"));
         return StockMapper.toMyStockResp(stock);
     }
+
+    // DELETE from CURRENT_STOCKS Table
+    @Transactional
+    public String deleteFromCurrentStocks(String ticker){
+       if (myStocksRepository.findByTickerIgnoreCase(ticker).isEmpty()){
+        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in your wallet!");
+       }
+        myStocksRepository.deleteByTickerIgnoreCase(ticker);
+        return "Stock " + ticker.toUpperCase() + " removed from your wallet!";
+    }
+
+
+    // POST to CURRENT_STOCKS Table
+
+    public MyStockDTOResp addToMyStocks(MyStockDTOReq stock){
+        Set<String> tickersLower = myStocksRepository.findAll().stream()
+                .map(s -> s.getTicker().toLowerCase())
+                .collect(Collectors.toSet());
+        Set<String> stocksTickersLower = stocksRepository.findAll().stream()
+                .map(s -> s.getTicker().toLowerCase())
+                .collect(Collectors.toSet());
+            String tickerLower = stock.getTicker().toLowerCase();
+            if (tickersLower.contains(tickerLower)) {
+                throw new BadRequestException("Stock " + stock.getTicker().toUpperCase() + " already in your wallet!");
+        }   else if (!stocksTickersLower.contains(tickerLower)){
+                throw new BadRequestException("Stock " + stock.getTicker().toUpperCase() + " not found in the Stocks repository");
+            }
+        MyStock myStock = StockMapper.toMyStockEntity(stock);
+        myStocksRepository.save(myStock);
+        return StockMapper.toMyStockResp(myStock);
+    }
+
 
 
 

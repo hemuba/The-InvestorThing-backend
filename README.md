@@ -1,86 +1,81 @@
-# StockManager Backend
+# 📊 StockManager Backend
 
-This is the backend service for the StockManager project, developed with Java and Spring Boot.
+![Java](https://img.shields.io/badge/Java-17+-blue.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Profile](https://img.shields.io/badge/Profile-dev%2Fprod-orange)
 
-## Overview
-
-StockManager is a work-in-progress backend REST API for managing stockOLD investments.  
-It is part of a larger fullstack project that will include:
-
-- A dedicated frontend (planned)
-- Oracle Database schema with stored procedures, triggers and functions
-- Scheduled Python scripts for automated database updates
-- Future migration to JPA + Hibernate
-
-The goal of this repository is to grow alongside my learning path and progressively showcase real-world backend development skills.
+Spring Boot REST API for managing stock investments.  
+Provides -at the moment- read-only access to two Oracle database tables: `STOCKS` and `CURRENT_STOCKS`.
 
 ---
 
-## Tech Stack
+## 🚀 Features
 
-- Java 17
-- Spring Boot 3
+- ✅ Read-only operations (GET) for both general and current stocks // POST, DELETE, PUT and PATCH method to be added.
+- ✅ JPA repositories: `StockRepository` and `MyStockRepository`
+- ✅ DTO response structure: `StockDTOResp`, `MyStockDTOResp`
+- ✅ DTO request structure: `StockDTOReq`, `MyStockDTOReq`
+- ✅ Centralized JSON response via `ApiResponse`
+- ✅ Profile-based config: `application-public.yml`, `application-secrets.yml` handled via `application.yml`
+- ✅ Logging with SLF4J + Logback
+- ✅ Custom Excpetions `NotFoundException`, `BadRequestException`, `MultiStatusException`, `UnprocessableEntityException` hanlded via GloablExceptionHandler class.
+- ✅ Input validation with `jakarta.validation`
+
+---
+
+## 🧠 Tech Stack
+
+- Java 17+
+- Spring Boot 3.x
 - Maven
-- Spring Validation (Jakarta)
-- RESTful architecture
-- DTO separation (Request / Response)
-- Enum mapping
-- Custom logic in POJOs (e.g., calculated fields)
+- Oracle Database 19c
+- Jakarta Validation
+- SLF4J + Logback
 
 ---
 
-## Current Features
+## 🧪 API Overview
 
-- Add single or multiple stocks via POST
-- Retrieve all or filtered stocks via GET
-- Delete stocks via DELETE
-- Update stocks via PUT or PATCH
-- Input validation with @Valid and @Validated
-- Global exception handling with @ControllerAdvice
-- Dynamic calculation of current return and total values
-- Clean separation of layers (Controller, Service, Repository)
+### 🔍 From `STOCKS` table
 
----
+| Method | Endpoint                        | Description                        |
+|--------|----------------------------------|------------------------------------|
+| GET    | `/stocks/all-stocks`            | List all stocks                    |
+| GET    | `/stocks/all-stocks/by-ticker`  | Get one stock by ticker (query)    |
+| GET    | `/stocks/all-stocks/{sector}`   | Get stocks by sector (path var)    |
 
-## API Endpoints
+### 📈 From `CURRENT_STOCKS` table
 
-| Method | Endpoint              | Description                     |
-|--------|-----------------------|---------------------------------|
-| GET    | `/stocks`             | Get all stocks                  |
-| GET    | `/stocks/by`          | Filter stocks by ticker/sector  |
-| POST   | `/stocks`             | Add a single stockOLD              |
-| POST   | `/stocks/batch`       | Add multiple stocks             |
-| DELETE | `/stocks/{ticker}`    | Delete a stockOLD by ticker        |
-| PUT    | `/stocks/{ticker}`    | Full update of a stockOLD          |
-| PATCH  | `/stocks/{ticker}`    | Partial update of a stockOLD       |
+| Method | Endpoint                              | Description                        |
+|--------|----------------------------------------|------------------------------------|
+| GET    | `/stocks/my-stocks`                   | List all currently held stocks     |
+| GET    | `/stocks/my-stocks/by-ticker`         | Get current stock by ticker        |
+
+> ℹ️ POST, PUT, PATCH, DELETE endpoints are not yet implemented.
 
 ---
 
-## Run the Project
+## ⚙️ Run Locally
 
 ```bash
-./mvnw spring-boot:run
+# Clone the repo
+git clone https://github.com/hemuba/stockmanager-be.git
+cd stockmanager-be
+
+# Run with dev profile
+./mvnw spring-boot:run -Dspring.profiles.active=dev
 ```
 
-or, if using Windows:
-
-```bash
-mvnw.cmd spring-boot:run
-```
+Default ports:
+- `dev` → 8081
+- `prod` → 8080
 
 ---
 
-## Next Steps
+## 🛡️ Author
 
-- ~~Add global exception handling with @ControllerAdvice~~ -> Done.
-- Introduce unit testing with JUnit and Mockito
-- Integrate JPA and Hibernate for persistence
-- Prepare the Oracle schema and initial data
-- Add a full frontend (React or Angular)
-- Automate data sync with Python + Windows Task Scheduler
-
----
-
-## License
-
-MIT
+**Alessandro De Vincenti**  
+Software Engineer  
+Java EE | Spring Boot | PL/SQL | Bash | Python

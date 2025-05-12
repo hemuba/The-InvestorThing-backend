@@ -20,7 +20,7 @@ Provides -at the moment- read-only access to two Oracle database tables: `STOCKS
 - ✅ Centralized JSON response via `ApiResponse`
 - ✅ Profile-based config: `application-public.yml`, `application-secrets.yml` handled via `application.yml`
 - ✅ Logging with SLF4J + Logback
-- ✅ Custom Excpetions `NotFoundException`, `BadRequestException`, `MultiStatusException`, `UnprocessableEntityException` hanlded via GloablExceptionHandler class.
+- ✅ Custom Exceptions `NotFoundException`, `BadRequestException`, `MultiStatusException`, `UnprocessableEntityException` hanlded via GlobalExceptionHandler class.
 - ✅ Input validation with `jakarta.validation`
 
 ---
@@ -56,6 +56,24 @@ Provides -at the moment- read-only access to two Oracle database tables: `STOCKS
 > ℹ️ POST, PUT, PATCH, DELETE endpoints are not yet implemented.
 
 ---
+
+## 🔄 Want to run without a database?
+
+If you want to try the full CRUD version of StockManager **without Oracle or JPA**,  
+check out the dedicated branch:
+
+👉 [`in-memory-version`](https://github.com/hemuba/stockmanager-be/tree/in-memory-version)
+
+It supports:
+
+- ✅ All REST methods: GET, POST, PUT, PATCH, DELETE
+- ✅ In-memory storage (no DB)
+- 🚫 No persistence on restart
+
+Ideal for frontend testing, mock APIs, or quick demos.
+
+---
+
 
 ## ⚙️ Run Locally
 

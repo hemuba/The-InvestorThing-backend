@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AllStocksRepository extends JpaRepository<Stock, String> {
 
     List<Stock> findBySectorIgnoreCase(String sector);
 
-    Stock findByTickerIgnoreCase(String ticker);
+    Optional<Stock> findByTickerIgnoreCase(String ticker);
 }

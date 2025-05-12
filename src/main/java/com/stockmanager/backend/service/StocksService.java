@@ -11,9 +11,8 @@ import com.stockmanager.backend.repository.AllStocksRepository;
 import com.stockmanager.backend.repository.MyStocksRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class StocksService {
@@ -28,39 +27,36 @@ public class StocksService {
 
     public List<StockDTOResponse> getAllStocks(){
         List<Stock> allStocks = allStocksRepository.findAll();
-        List<StockDTOResponse> allStocksDTO = new ArrayList<>();
-        for (Stock stock : allStocks){
-            StockDTOResponse resp = StockMapper.toStockResponse(stock);
-            allStocksDTO.add(resp);
-        }
-        return allStocksDTO;
+        return allStocks.stream()
+                .map(StockMapper::toStockResponse)
+                .toList();
     }
 
     public List<StockDTOResponse> getStocksBySector(String sector){
-        return Optional.ofNullable(allStocksRepository.findBySectorIgnoreCase(sector))
-               .orElseThrow(() -> new NotFoundException("Sector not found in the database"))
-                .stream()
+        List<Stock> stocks = allStocksRepository.findBySectorIgnoreCase(sector);
+        if (stocks.isEmpty()){
+            throw new NotFoundException("Sector not found in the database");
+        }
+        return stocks.stream()
                 .map(StockMapper::toStockResponse)
                 .toList();
     }
 
     public StockDTOResponse getAllStocksByTicker(String ticker){
-       Stock stock =  Optional.ofNullable(allStocksRepository.findByTickerIgnoreCase(ticker))
+       Stock stock =  allStocksRepository.findByTickerIgnoreCase(ticker)
                .orElseThrow(() -> new NotFoundException("Stock not found in the Database"));
        return StockMapper.toStockResponse(stock);
     }
 
     public List<MyStockDTOResponse> getAllCurrentStocks() {
         List<MyStock> myStocks = myStocksRepository.findAll();
-        List<MyStockDTOResponse> myStockResponse = new ArrayList<>();
-        for (MyStock myStock : myStocks) {
-            myStockResponse.add(StockMapper.toMyStockDTOResponse(myStock));
-        }
-        return myStockResponse;
+        return myStocks.stream()
+                .map(StockMapper::toMyStockDTOResponse)
+                .toList();
     }
 
     public MyStockDTOResponse getStockByTicker(String ticker){
-      MyStock myStock =  Optional.ofNullable(myStocksRepository.findByTickerIgnoreCase(ticker))
+      MyStock myStock =  myStocksRepository.findByTickerIgnoreCase(ticker)
               .orElseThrow(() -> new NotFoundException("Stock not found in the database"));
       return StockMapper.toMyStockDTOResponse(myStock);
     }

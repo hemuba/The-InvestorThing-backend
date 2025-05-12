@@ -1,51 +1,53 @@
 package com.stockmanager.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDate;
 
 public class StockDTORequest {
 
-    @NotBlank(message = "Ticker cannot be empty.")
+    @NotBlank(message = "Ticker cannot be blank")
     private String ticker;
+
     private String companyName;
+
+    private String exchange;
+
     private String sector;
-    @NotNull(message = "Number of shares cannot be empty")
-    private Double noOfShares;
-    @NotNull(message = "Purchase price cannot be empty")
-    private Double purchasePrice;
-    @NotNull(message = "Current price cannot be empty")
-    private Double currentPrice;
-    private LocalDate buyDate;
+
+    private String currency;
 
     public StockDTORequest() {
     }
 
-    public StockDTORequest(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
+    public StockDTORequest(String ticker, String companyName, String exchange, String sector, String currency) {
         this.ticker = ticker;
         this.companyName = companyName;
+        this.exchange = exchange;
         this.sector = sector;
-        this.noOfShares = noOfShares;
-        this.purchasePrice = purchasePrice;
-        this.currentPrice = currentPrice;
-        this.buyDate = buyDate;
+        this.currency = currency;
     }
 
-    public String getTicker() {
+    public @NotBlank(message = "Ticker cannot be blank") String getTicker() {
         return ticker;
     }
 
-    public void setTicker(String ticker) {
+    public void setTicker(@NotBlank(message = "Ticker cannot be blank") String ticker) {
         this.ticker = ticker;
     }
 
     public String getCompanyName() {
-        return this.companyName;
+        return companyName;
     }
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
     }
 
     public String getSector() {
@@ -56,35 +58,11 @@ public class StockDTORequest {
         this.sector = sector;
     }
 
-    public Double getNoOfShares() {
-        return noOfShares;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setNoOfShares(Double noOfShares) {
-        this.noOfShares = noOfShares;
-    }
-
-    public Double getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(Double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

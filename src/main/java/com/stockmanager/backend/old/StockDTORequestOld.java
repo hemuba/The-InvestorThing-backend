@@ -1,21 +1,28 @@
 package com.stockmanager.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
-public class StockDTOPatch {
+public class StockDTORequestOld {
 
+    @NotBlank(message = "Ticker cannot be empty.")
     private String ticker;
     private String companyName;
     private String sector;
+    @NotNull(message = "Number of shares cannot be empty")
     private Double noOfShares;
+    @NotNull(message = "Purchase price cannot be empty")
     private Double purchasePrice;
+    @NotNull(message = "Current price cannot be empty")
     private Double currentPrice;
     private LocalDate buyDate;
 
-    public StockDTOPatch() {
+    public StockDTORequestOld() {
     }
 
-    public StockDTOPatch(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
+    public StockDTORequestOld(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, LocalDate buyDate) {
         this.ticker = ticker;
         this.companyName = companyName;
         this.sector = sector;
@@ -34,7 +41,7 @@ public class StockDTOPatch {
     }
 
     public String getCompanyName() {
-        return companyName;
+        return this.companyName;
     }
 
     public void setCompanyName(String companyName) {
@@ -73,11 +80,11 @@ public class StockDTOPatch {
         this.currentPrice = currentPrice;
     }
 
-    public LocalDate getBuyDate(){
-        return this.buyDate;
+    public LocalDate getBuyDate() {
+        return buyDate;
     }
 
-    public void setBuyDate(LocalDate buyDate){
+    public void setBuyDate(LocalDate buyDate) {
         this.buyDate = buyDate;
     }
 }

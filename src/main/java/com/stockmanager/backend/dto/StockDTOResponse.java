@@ -1,37 +1,12 @@
 package com.stockmanager.backend.dto;
 
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 public class StockDTOResponse {
 
     private String ticker;
     private String companyName;
+    private String exchange;
     private String sector;
-    private Double noOfShares;
-    private Double purchasePrice;
-    private Double currentPrice;
-    private BigDecimal currentReturn;
-    private BigDecimal currentReturnTotal;
-    private BigDecimal currentTotal;
-    private LocalDate buyDate;
-
-    public StockDTOResponse() {
-    }
-
-    public StockDTOResponse(String ticker, String companyName, String sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
-        this.ticker = ticker;
-        this.companyName = companyName;
-        this.sector = sector;
-        this.noOfShares = noOfShares;
-        this.purchasePrice = purchasePrice;
-        this.currentPrice = currentPrice;
-        this.currentReturn = currentReturn;
-        this.currentReturnTotal = currentReturnTotal;
-        this.currentTotal = currentTotal;
-        this.buyDate = buyDate;
-    }
+    private String currency;
 
     public String getTicker() {
         return ticker;
@@ -49,6 +24,14 @@ public class StockDTOResponse {
         this.companyName = companyName;
     }
 
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
+    }
+
     public String getSector() {
         return sector;
     }
@@ -57,59 +40,22 @@ public class StockDTOResponse {
         this.sector = sector;
     }
 
-    public Double getNoOfShares() {
-        return noOfShares;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setNoOfShares (Double noOfShares) {
-        this.noOfShares = noOfShares;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public Double getPurchasePrice() {
-        return purchasePrice;
+    public StockDTOResponse() {
     }
 
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(Double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public BigDecimal getCurrentReturn() {
-        return currentReturn;
-    }
-
-    public void setCurrentReturn(BigDecimal currentReturn) {
-        this.currentReturn = currentReturn;
-    }
-
-    public BigDecimal getCurrentReturnTotal() {
-        return currentReturnTotal;
-    }
-
-    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
-        this.currentReturnTotal = currentReturnTotal;
-    }
-
-    public BigDecimal getCurrentTotal() {
-        return currentTotal;
-    }
-
-    public void setCurrentTotal(BigDecimal currentTotal) {
-        this.currentTotal = currentTotal;
-    }
-
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
+    public StockDTOResponse(String ticker, String companyName, String exchange, String sector, String currency) {
+        this.ticker = ticker;
+        this.companyName = companyName;
+        this.exchange = exchange;
+        this.sector = sector;
+        this.currency = currency;
     }
 }

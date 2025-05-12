@@ -1,33 +1,40 @@
 package com.stockmanager.backend.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "STOCKS", schema = "IM")
 public class Stock {
 
+    @Id
+    @Column(name= "TICKER")
     private String ticker;
-    private String companyName;
-    private Sectors sector;
-    private Double noOfShares;
-    private Double purchasePrice;
-    private Double currentPrice;
-    private BigDecimal currentReturn;
-    private BigDecimal currentReturnTotal;
-    private BigDecimal currentTotal;
-    private LocalDate buyDate;
 
-    public Stock(String ticker, String companyName, Sectors sector, Double noOfShares, Double purchasePrice, Double currentPrice, BigDecimal currentReturn, BigDecimal currentReturnTotal, BigDecimal currentTotal, LocalDate buyDate) {
+    @Column(name= "COMPANY_NAME")
+    private String companyName;
+
+    @Column(name= "EXCHANGE")
+    private String exchange;
+
+    @Column(name= "SECTOR")
+    private String sector;
+
+    @Column(name= "CURRENCY")
+    private String currency;
+
+
+    public Stock() {
+    }
+
+    public Stock(String ticker, String companyName, String exchange, String sector, String currency) {
         this.ticker = ticker;
         this.companyName = companyName;
+        this.exchange = exchange;
         this.sector = sector;
-        this.noOfShares = noOfShares;
-        this.purchasePrice = purchasePrice;
-        this.currentPrice = currentPrice;
-        this.currentReturn = currentReturn;
-        this.currentReturnTotal = currentReturnTotal;
-        this.currentTotal = currentTotal;
-        this.buyDate = buyDate;
+        this.currency = currency;
     }
 
     public String getTicker() {
@@ -46,67 +53,27 @@ public class Stock {
         this.companyName = companyName;
     }
 
-    public Sectors getSector() {
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
+    }
+
+    public String getSector() {
         return sector;
     }
 
-    public void setSector(Sectors sector) {
+    public void setSector(String sector) {
         this.sector = sector;
     }
 
-    public Double getNoOfShares() {
-        return noOfShares;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setNoOfShares(Double noOfShares) {
-        this.noOfShares = noOfShares;
-    }
-
-    public Double getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public Double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(Double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public BigDecimal getCurrentReturn() {
-        return this.currentReturn;
-    }
-
-    public void setCurrentReturn(BigDecimal currentReturn) {
-        this.currentReturn = currentReturn;
-    }
-
-    public BigDecimal getCurrentReturnTotal() {
-        return this.currentReturnTotal;
-    }
-
-    public void setCurrentReturnTotal(BigDecimal currentReturnTotal) {
-        this.currentReturnTotal = currentReturnTotal;
-    }
-
-    public BigDecimal getCurrentTotal() {
-        return currentTotal;
-    }
-
-    public void setCurrentTotal(BigDecimal currentTotal) {
-        this.currentTotal = currentTotal;
-    }
-
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

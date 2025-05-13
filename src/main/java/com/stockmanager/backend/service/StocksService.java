@@ -79,20 +79,14 @@ public class StocksService {
 
     // POST to CURRENT_STOCKS Table
 
-    public MyStockDTOResp addToMyStocks(MyStockDTOReq stock){
-        Set<String> tickersLower = myStocksRepository.findAll().stream()
-                .map(s -> s.getTicker().toLowerCase())
-                .collect(Collectors.toSet());
-        Set<String> stocksTickersLower = stocksRepository.findAll().stream()
-                .map(s -> s.getTicker().toLowerCase())
-                .collect(Collectors.toSet());
-            String tickerLower = stock.getTicker().toLowerCase();
-            if (tickersLower.contains(tickerLower)) {
-                throw new BadRequestException("Stock " + stock.getTicker().toUpperCase() + " already in your wallet!");
-        }   else if (!stocksTickersLower.contains(tickerLower)){
-                throw new BadRequestException("Stock " + stock.getTicker().toUpperCase() + " not found in the Stocks repository");
-            }
-        MyStock myStock = StockMapper.toMyStockEntity(stock);
+    public MyStockDTOResp addToMyStocks(MyStockDTOReq stockDTOReq){
+        if (stocksRepository.findByTickerIgnoreCase(stockDTOReq.getTicker()).isEmpty()){
+            throw new NotFoundException("Stock " + stockDTOReq.getTicker().toUpperCase() + " not found in the Stocks repository, hence cannot be added to your wallet");
+        }
+        if (myStocksRepository.findByTickerIgnoreCase(stockDTOReq.getTicker()).isPresent()){
+            throw new BadRequestException("Stock " + stockDTOReq.getTicker().toUpperCase() + " already present in your Wallet");
+        }
+        MyStock myStock = StockMapper.toMyStockEntity(stockDTOReq);
         myStocksRepository.save(myStock);
         return StockMapper.toMyStockResp(myStock);
     }

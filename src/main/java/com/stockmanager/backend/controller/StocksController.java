@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/investment")
+@RequestMapping("/investment-manager")
 @Validated
 public class StocksController {
 
@@ -104,6 +104,26 @@ public class StocksController {
     public ResponseEntity<ApiResponse> addToAllEf(@Valid @RequestBody EtfDTOReq etfDTOReq){
         EtfDTOResp obj = etfService.addToAllEtf(etfDTOReq);
         return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "ETF " + etfDTOReq.getTicker() + " added to the ETF repository", obj));
+    }
+
+    //GET from CURRENT_ETF Table
+
+    @GetMapping("/my-etf")
+    public ResponseEntity<ApiResponse> getAllMyEtf(){
+        List<MyEtfDTOResp> obj = etfService.getAllMyEtf();
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Yor ETF Wallet - current ETF: " + obj.size(), obj));
+    }
+
+    @GetMapping("/my-etf/by-ticker")
+    public ResponseEntity<ApiResponse> getMyEtfByTicker(@RequestParam String ticker){
+        MyEtfDTOResp obj = etfService.getMyEtfByTicker(ticker);
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "ETF " + obj.getTicker(), obj));
+    }
+
+    @PostMapping("/my-etf/add-etf")
+    public ResponseEntity<ApiResponse> addToMyEtf(@Valid @RequestBody MyEtfDTOReq req){
+        MyEtfDTOResp obj = etfService.addToMyEtf(req);
+        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "ETF " + obj.getTicker() + " added to your wallet!", obj));
     }
 
 }

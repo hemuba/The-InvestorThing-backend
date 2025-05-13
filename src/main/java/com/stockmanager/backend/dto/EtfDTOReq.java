@@ -19,11 +19,11 @@ public class EtfDTOReq {
     public EtfDTOReq() {
     }
 
-    public @NotBlank(message = "Ticker cannot be blank") String getTicker() {
+    public String getTicker() {
         return ticker;
     }
 
-    public void setTicker(@NotBlank(message = "Ticker cannot be blank") String ticker) {
+    public void setTicker(String ticker) {
         this.ticker = ticker;
     }
 

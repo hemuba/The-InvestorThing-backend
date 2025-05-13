@@ -3,41 +3,44 @@ package com.stockmanager.backend.service;
 
 import com.stockmanager.backend.dto.EtfDTOReq;
 import com.stockmanager.backend.dto.EtfDTOResp;
+import com.stockmanager.backend.dto.MyEtfDTOReq;
+import com.stockmanager.backend.dto.MyEtfDTOResp;
 import com.stockmanager.backend.exception.BadRequestException;
 import com.stockmanager.backend.exception.NotFoundException;
 import com.stockmanager.backend.mapper.EtfMapper;
-import com.stockmanager.backend.mapper.StockMapper;
 import com.stockmanager.backend.model.Etf;
+import com.stockmanager.backend.model.MyEtf;
 import com.stockmanager.backend.repository.EtfRepository;
+import com.stockmanager.backend.repository.MyEtfRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class EtfService {
-    private final EtfRepository eTfRepository;
+    private final EtfRepository etfRepository;
+    private final MyEtfRepository myEtfRepository;
 
-    public EtfService(EtfRepository etfRepository) {
-        this.eTfRepository = etfRepository;
+    public EtfService(EtfRepository etfRepository, MyEtfRepository myEtfRepository) {
+        this.etfRepository = etfRepository;
+        this.myEtfRepository = myEtfRepository;
     }
 
         // GET from ETF Table
     public List<EtfDTOResp> getAllEtf(){
-        return eTfRepository.findAll().stream()
+        return etfRepository.findAll().stream()
                 .map(EtfMapper::toResponse)
                 .toList();
     }
 
     public List<EtfDTOResp> getEtfByTheme(String theme){
-        return eTfRepository.findByThemeIgnoreCase(theme).stream()
+        return etfRepository.findByThemeIgnoreCase(theme).stream()
                 .map(EtfMapper::toResponse)
                 .toList();
     }
 
     public EtfDTOResp getEtfByTicker(String ticker){
-        Etf etf = eTfRepository.findByTickerIgnoreCase(ticker)
+        Etf etf = etfRepository.findByTickerIgnoreCase(ticker)
                 .orElseThrow(() -> new NotFoundException("ETF " + ticker.toUpperCase().toUpperCase() + " not found in the ETF repository"));
         return EtfMapper.toResponse(etf);
     }
@@ -48,12 +51,41 @@ public class EtfService {
     // POST to ETF Table
 
     public EtfDTOResp addToAllEtf(EtfDTOReq etfDTOReq){
-        if (eTfRepository.findByTickerIgnoreCase(etfDTOReq.getTicker()).isPresent()){
+        if (etfRepository.findByTickerIgnoreCase(etfDTOReq.getTicker()).isPresent()){
             throw new BadRequestException("ETF " + etfDTOReq.getTicker().toUpperCase() + " already present in the ETF Repository");
         }
         Etf etf = EtfMapper.toEntity(etfDTOReq);
-        eTfRepository.save(etf);
+        etfRepository.save(etf);
         return EtfMapper.toResponse(etf);
+    }
+
+    // GET from CURRENT_ETF Table
+
+    public List<MyEtfDTOResp> getAllMyEtf(){
+        return myEtfRepository.findAll().stream()
+                .map(EtfMapper::toMyEtfResponse)
+                .toList();
+    }
+
+    public MyEtfDTOResp getMyEtfByTicker(String ticker){
+        MyEtf etf = myEtfRepository.findByTickerIgnoreCase(ticker)
+                .orElseThrow(() -> new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in your wallet!"));
+        return EtfMapper.toMyEtfResponse(etf);
+
+    }
+
+    // POST to CURRENT_ETF Table
+    public MyEtfDTOResp addToMyEtf(MyEtfDTOReq req){
+        if (etfRepository.findByTickerIgnoreCase(req.getTicker()).isEmpty()){
+            throw new BadRequestException("ETF " + req.getTicker().toUpperCase() + " not found in ETF Repository, hence cannot be added to your wallet.");
+       }
+        if (myEtfRepository.findByTickerIgnoreCase(req.getTicker()).isPresent()){
+            throw new BadRequestException("ETF " + req.getTicker().toUpperCase() + " already present in your wallet!" );
+
+       }
+       MyEtf etf = EtfMapper.toMyEtfEntity(req);
+       myEtfRepository.save(etf);
+       return EtfMapper.toMyEtfResponse(etf);
     }
 
 }

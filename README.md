@@ -1,4 +1,4 @@
-# 📊 StockManager Backend
+# 💼 InvestMate Backend
 
 ![Java](https://img.shields.io/badge/Java-17+-blue.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
@@ -6,22 +6,26 @@
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![Profile](https://img.shields.io/badge/Profile-dev%2Fprod-orange)
 
-Spring Boot REST API for managing stock investments.  
-Provides -at the moment- read-only access to two Oracle database tables: `STOCKS` and `CURRENT_STOCKS`.
+> 🧱 *This backend is the first building block of the full InvestMate platform.*  
+> Upcoming modules include a web dashboard, analytics engine, and automation tools.
+
+**InvestMate** is a Spring Boot REST API designed to manage and analyze your investment portfolio.  
+It currently integrates with Oracle Database and supports operations for both **Stocks** and **ETFs**.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Read-only operations (GET) for both general and current stocks // POST, DELETE, PUT and PATCH method to be added.
-- ✅ JPA repositories: `StockRepository` and `MyStockRepository`
-- ✅ DTO response structure: `StockDTOResp`, `MyStockDTOResp`
-- ✅ DTO request structure: `StockDTOReq`, `MyStockDTOReq`
-- ✅ Centralized JSON response via `ApiResponse`
-- ✅ Profile-based config: `application-public.yml`, `application-secrets.yml` handled via `application.yml`
+- ✅ CRUD for **Stocks** and **Current Holdings**
+- ✅ CRUD for **ETFs** and **Owned ETFs**
+- ✅ DTO structure (Request/Response)
+- ✅ Centralized JSON responses with `ApiResponse`
+- ✅ Global error handling via `@ControllerAdvice`
+- ✅ Input validation with Jakarta Validation
 - ✅ Logging with SLF4J + Logback
-- ✅ Custom Exceptions `NotFoundException`, `BadRequestException`, `MultiStatusException`, `UnprocessableEntityException` hanlded via GlobalExceptionHandler class.
-- ✅ Input validation with `jakarta.validation`
+- ✅ Multi-profile support: `dev` / `prod`
+- ✅ Modular service and repository layers
+- 🔜 Scheduled price updates, analytics, and statistics modules (coming soon)
 
 ---
 
@@ -33,67 +37,77 @@ Provides -at the moment- read-only access to two Oracle database tables: `STOCKS
 - Oracle Database 19c
 - Jakarta Validation
 - SLF4J + Logback
+- Postman (for API testing)
 
 ---
 
-## 🧪 API Overview
+## 📊 API Overview
 
-### 🔍 From `STOCKS` table
+### 📈 STOCKS
 
-| Method | Endpoint                        | Description                        |
-|--------|----------------------------------|------------------------------------|
-| GET    | `/stocks/all-stocks`            | List all stocks                    |
-| GET    | `/stocks/all-stocks/by-ticker`  | Get one stock by ticker (query)    |
-| GET    | `/stocks/all-stocks/{sector}`   | Get stocks by sector (path var)    |
+| Method | Endpoint                             | Description                        |
+|--------|---------------------------------------|------------------------------------|
+| GET    | `/investment-manager/all-stocks`     | Get all stocks                     |
+| GET    | `/investment-manager/all-stocks/by-ticker` | Get a stock by ticker       |
+| GET    | `/investment-manager/all-stocks/{sector}`  | Filter stocks by sector      |
+| GET    | `/investment-manager/my-stocks`      | Get current holdings               |
+| GET    | `/investment-manager/my-stocks/by-ticker` | Get current stock by ticker |
+| POST   | `/investment-manager/my-stocks/add-stock` | Add a stock to wallet       |
+| DELETE | `/investment-manager/my-stocks/{ticker}` | Delete a stock from wallet  |
 
-### 📈 From `CURRENT_STOCKS` table
+### 💰 ETFs
 
-| Method | Endpoint                              | Description                        |
-|--------|----------------------------------------|------------------------------------|
-| GET    | `/stocks/my-stocks`                   | List all currently held stocks     |
-| GET    | `/stocks/my-stocks/by-ticker`         | Get current stock by ticker        |
-
-> ℹ️ POST, PUT, PATCH, DELETE endpoints are not yet implemented.
-
----
-
-## 🔄 Want to run without a database?
-
-If you want to try the full CRUD version of StockManager **without Oracle or JPA**,  
-check out the dedicated branch:
-
-👉 [`in-memory-version`](https://github.com/hemuba/stockmanager-be/tree/in-memory-version)
-
-It supports:
-
-- ✅ All REST methods: GET, POST, PUT, PATCH, DELETE
-- ✅ In-memory storage (no DB)
-- 🚫 No persistence on restart
-
-Ideal for frontend testing, mock APIs, or quick demos.
+| Method | Endpoint                                | Description                          |
+|--------|------------------------------------------|--------------------------------------|
+| GET    | `/investment-manager/all-etf`           | List all ETFs                        |
+| GET    | `/investment-manager/all-etf/by-ticker` | Get ETF by ticker                    |
+| GET    | `/investment-manager/all-etf/{theme}`   | Filter ETFs by theme                 |
+| POST   | `/investment-manager/all-etf/add-etf`   | Add a new ETF to repository          |
+| GET    | `/investment-manager/my-etf`            | List currently owned ETFs            |
+| GET    | `/investment-manager/my-etf/by-ticker`  | Get owned ETF by ticker              |
+| POST   | `/investment-manager/my-etf/add-etf`    | Add ETF to your wallet               |
 
 ---
 
+## 🧪 Want to test without a database?
+
+Check out the lightweight version of InvestMate with in-memory storage:
+
+👉 [`in-memory-version`](https://github.com/hemuba/investmate-backend/tree/in-memory-version)
+
+- ✅ All REST methods (GET, POST, PUT, PATCH, DELETE)
+- ✅ Works without Oracle DB
+- 🚫 No persistence after restart
+
+Perfect for demos, frontend testing, or rapid prototyping.
+
+---
 
 ## ⚙️ Run Locally
 
 ```bash
-# Clone the repo
-git clone https://github.com/hemuba/stockmanager-be.git
-cd stockmanager-be
+# Clone the project
+git clone https://github.com/hemuba/investmate-backend.git
+cd investmate-backend
 
-# Run with dev profile
+# Run with development profile
 ./mvnw spring-boot:run -Dspring.profiles.active=dev
 ```
 
-Default ports:
-- `dev` → 8081
-- `prod` → 8080
+**Ports:**
+- `dev` → `8081`
+- `prod` → `8080`
 
 ---
 
-## 🛡️ Author
+## 👤 Author
 
 **Alessandro De Vincenti**  
 Software Engineer  
-Java EE | Spring Boot | PL/SQL | Bash | Python
+💻 Java | Spring Boot | PL/SQL | Bash | Python  
+
+---
+
+## 📌 License
+
+This project is licensed under the MIT License.

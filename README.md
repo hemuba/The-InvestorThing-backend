@@ -1,4 +1,4 @@
-# 📊 StockManager Backend -- Development Branch
+# 📊 StockManager Backend
 
 ![Java](https://img.shields.io/badge/Java-17+-blue.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)

@@ -8,17 +8,15 @@ public class CryptoMapper {
 
     public Crypto toEntity(CryptoDTOReq req){
         return new Crypto(
-          req.getId(),
-          req.getSymbol(),
-          req.getName(),
-          req.getSector()
+                req.getSymbol(),
+                req.getName(),
+                req.getSector()
         );
     }
 
     public static CryptoDTOResp toResponse(Crypto req){
         return new CryptoDTOResp(
-                req.getId(),
-                req.getSymbol(),
+                req.getSymbol().toUpperCase(),
                 req.getName(),
                 req.getSector()
         );

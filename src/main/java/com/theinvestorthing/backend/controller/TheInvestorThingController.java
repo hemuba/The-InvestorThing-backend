@@ -1,5 +1,7 @@
 package com.theinvestorthing.backend.controller;
 
+import com.theinvestorthing.backend.crypto.dto.CryptoDTOResp;
+import com.theinvestorthing.backend.crypto.service.CryptoService;
 import com.theinvestorthing.backend.etf.dto.EtfDTOReq;
 import com.theinvestorthing.backend.etf.dto.EtfDTOResp;
 import com.theinvestorthing.backend.etf.dto.MyEtfDTOReq;
@@ -19,16 +21,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/investment-manager")
+@RequestMapping("/the-investorthing")
 @Validated
 public class TheInvestorThingController {
 
     private final StocksService stocksService;
     private final EtfService etfService;
+    private final CryptoService cryptoService;
 
-    public TheInvestorThingController(StocksService stocksService, EtfService etfService) {
+    public TheInvestorThingController(StocksService stocksService, EtfService etfService, CryptoService cryptoService) {
         this.stocksService = stocksService;
         this.etfService = etfService;
+        this.cryptoService = cryptoService;
     }
 
         // GET from STOCKS table
@@ -123,10 +127,26 @@ public class TheInvestorThingController {
         return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "ETF " + obj.getTicker(), obj));
     }
 
+    // POST to CURRENT_ETF Table
+
     @PostMapping("/my-etf/add-etf")
     public ResponseEntity<ApiResponse> addToMyEtf(@Valid @RequestBody MyEtfDTOReq req){
         MyEtfDTOResp obj = etfService.addToMyEtf(req);
         return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "ETF " + obj.getTicker() + " added to your wallet!", obj));
+    }
+
+    //GET from CRYPTO Table
+
+    @GetMapping("/all-crypto")
+    public ResponseEntity<ApiResponse> getAllCrypto(){
+        List<CryptoDTOResp> obj = cryptoService.getAllCrypto();
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Crypto Repository", obj));
+    }
+
+    @GetMapping("/all-crypto/by-symbol")
+    public ResponseEntity<ApiResponse> getAllCryptoBySymbol(@RequestParam String symbol){
+        CryptoDTOResp obj = cryptoService.getCryptoBySymbol(symbol);
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
     }
 
 }

@@ -1,10 +1,6 @@
 package com.theinvestorthing.backend.crypto.dto;
 
-import jakarta.persistence.Column;
-
 public class CryptoDTOResp {
-
-    private String id;
 
     private String symbol;
 
@@ -15,19 +11,10 @@ public class CryptoDTOResp {
     public CryptoDTOResp() {
     }
 
-    public CryptoDTOResp(String id, String symbol, String name, String sector) {
-        this.id = id;
+    public CryptoDTOResp(String symbol, String name, String sector) {
         this.symbol = symbol;
         this.name = name;
         this.sector = sector;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getSymbol() {

@@ -19,6 +19,7 @@ public class CryptoService {
         this.cryptoRepository = cryptoRepository;
     }
 
+    // GET Methods from CRYPTO Table
     public List<CryptoDTOResp> getAllCrypto() {
         return cryptoRepository.findAll().stream()
                 .map(CryptoMapper::toResponse)
@@ -26,11 +27,10 @@ public class CryptoService {
 
     }
 
-    public CryptoDTOResp getCryptoByTicker(String id){
-        Crypto crypto = cryptoRepository.findByIdIgnoreCase(id)
-                .orElseThrow(() -> new NotFoundException("Crypto " + id.toUpperCase() + " not found in Crypto Repository"));
+    public CryptoDTOResp getCryptoBySymbol(String Symbol) {
+        Crypto crypto = cryptoRepository.findBySymbolIgnoreCase(Symbol)
+                .orElseThrow(() -> new NotFoundException("Crypto " + Symbol.toUpperCase() + " not found in Crypto Repository"));
         return CryptoMapper.toResponse(crypto);
-
 
     }
 }

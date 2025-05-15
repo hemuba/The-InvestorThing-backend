@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class CryptoDTOReq {
 
-    @NotBlank(message = "ID cannot be blank")
-    private String id;
-
+    @NotBlank(message = "Symbol cannot be blank")
     private String symbol;
 
     private String name;
@@ -17,19 +15,10 @@ public class CryptoDTOReq {
     public CryptoDTOReq() {
     }
 
-    public CryptoDTOReq(String id, String symbol, String name, String sector) {
-        this.id = id;
+    public CryptoDTOReq(String symbol, String name, String sector) {
         this.symbol = symbol;
         this.name = name;
         this.sector = sector;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getSymbol() {

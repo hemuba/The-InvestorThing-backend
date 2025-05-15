@@ -11,9 +11,6 @@ import jakarta.persistence.Table;
 public class Crypto {
 
     @Id
-    @Column(name = "ID")
-    private String id;
-
     @Column(name = "SYMBOL")
     private String symbol;
 
@@ -26,20 +23,12 @@ public class Crypto {
     public Crypto() {
     }
 
-    public Crypto(String id, String symbol, String name, String sector) {
-        this.id = id;
+    public Crypto(String symbol, String name, String sector) {
         this.symbol = symbol;
         this.name = name;
         this.sector = sector;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getSymbol() {
         return symbol;

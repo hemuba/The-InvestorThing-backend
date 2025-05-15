@@ -15,7 +15,7 @@ public class CryptoMapper {
         );
     }
 
-    public CryptoDTOResp toResp(CryptoDTOReq req){
+    public static CryptoDTOResp toResponse(Crypto req){
         return new CryptoDTOResp(
                 req.getId(),
                 req.getSymbol(),
@@ -23,4 +23,5 @@ public class CryptoMapper {
                 req.getSector()
         );
     }
+
 }

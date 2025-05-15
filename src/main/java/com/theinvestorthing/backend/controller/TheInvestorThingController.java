@@ -21,12 +21,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/investment-manager")
 @Validated
-public class StocksController {
+public class TheInvestorThingController {
 
     private final StocksService stocksService;
     private final EtfService etfService;
 
-    public StocksController(StocksService stocksService, EtfService etfService) {
+    public TheInvestorThingController(StocksService stocksService, EtfService etfService) {
         this.stocksService = stocksService;
         this.etfService = etfService;
     }

@@ -7,10 +7,10 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>logs/investmate.log</file>
+        <file>logs/theinvestorthing_be.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/investmate.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/theinvestorthing_be.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>20</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
@@ -28,7 +28,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.investmate" level="DEBUG"/>
+    <logger name="com.theinvestorthing" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE" />

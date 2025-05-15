@@ -6,7 +6,7 @@ import com.theinvestorthing.backend.crypto.model.Crypto;
 
 public class CryptoMapper {
 
-    public Crypto toEntity(CryptoDTOReq req){
+    public static Crypto toEntity(CryptoDTOReq req){
         return new Crypto(
                 req.getSymbol(),
                 req.getName(),

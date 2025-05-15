@@ -1,4 +1,4 @@
-# 💼 The InvestorThing Backend
+# 💼 The-InvestorThing
 
 ![Java](https://img.shields.io/badge/Java-17+-blue.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
@@ -6,10 +6,10 @@
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![Profile](https://img.shields.io/badge/Profile-dev%2Fprod-orange)
 
-> 🧱 *This backend is the first building block of the full The InvestorThing platform.*  
+> 🧱 *This backend is the first building block of the full The-InvestorThing platform.*  
 > Upcoming modules include a web dashboard, analytics engine, and automation tools.
 
-**The InvestorThing** is a Spring Boot REST API designed to manage and analyze your investment portfolio.  
+**The-InvestorThing** is a Spring Boot REST API designed to manage and analyze your investment portfolio.  
 It currently integrates with Oracle Database and supports operations for both **Stocks** and **ETFs**.
 
 ---
@@ -71,9 +71,9 @@ It currently integrates with Oracle Database and supports operations for both **
 
 ## 🧪 Want to test without a database?
 
-Check out the lightweight version of The InvestorThing with in-memory storage:
+Check out the lightweight version of The-InvestorThing with in-memory storage:
 
-👉 [`in-memory-version`](https://github.com/hemuba/investmate-backend/tree/in-memory-version)
+👉 [`in-memory-version`](https://github.com/hemuba/the-investorthing-backend/tree/in-memory-version)
 
 - ✅ All REST methods (GET, POST, PUT, PATCH, DELETE)
 - ✅ Works without Oracle DB
@@ -87,18 +87,12 @@ Perfect for demos, frontend testing, or rapid prototyping.
 
 ```bash
 # Clone the project
-git clone https://github.com/hemuba/investmate-backend.git
-cd investmate-backend
+git clone https://github.com/hemuba/the-investorthing-backend.git
+cd the-investorthing-backend
 
 # Run with development profile
 ./mvnw spring-boot:run -Dspring.profiles.active=dev
 ```
-
-**Ports:**
-- `dev` → `8081`
-- `prod` → `8080`
-
----
 
 ## 👤 Author
 

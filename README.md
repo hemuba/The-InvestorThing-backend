@@ -1,107 +1,120 @@
-# 💼 The-InvestorThing
+# The Investor Thing – Backend
 
-![Java](https://img.shields.io/badge/Java-17+-blue.svg)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Profile](https://img.shields.io/badge/Profile-dev%2Fprod-orange)
+This project is a **Java Spring Boot backend** integrated with **Oracle Database** and enhanced with **Python scripts** for financial data retrieval.  
+It is part of a larger full-stack investment portfolio manager application.
 
-> 🧱 *This backend is the first building block of the full The-InvestorThing platform.*  
-> Upcoming modules include a web dashboard, analytics engine, and automation tools.
-
-**The-InvestorThing** is a Spring Boot REST API designed to manage and analyze your investment portfolio.  
-It currently integrates with Oracle Database and supports operations for both **Stocks** and **ETFs**.
+> WIP – A FE (React/TypeScript) will be added in a separate module.
 
 ---
 
-## 🚀 Features
+## Tech Stack
 
-- ✅ CRUD for **Stocks** and **Current Holdings**
-- ✅ CRUD for **ETFs** and **Owned ETFs**
-- ✅ DTO structure (Request/Response)
-- ✅ Centralized JSON responses with `ApiResponse`
-- ✅ Global error handling via `@ControllerAdvice`
-- ✅ Input validation with Jakarta Validation
-- ✅ Logging with SLF4J + Logback
-- ✅ Multi-profile support: `dev` / `prod`
-- ✅ Modular service and repository layers
-- 🔜 Scheduled price updates, analytics, and statistics modules (coming soon)
-
----
-
-## 🧠 Tech Stack
-
-- Java 17+
-- Spring Boot 3.x
-- Maven
-- Oracle Database 19c
-- Jakarta Validation
-- SLF4J + Logback
-- Postman (for API testing)
+- **Java 17**
+- **Spring Boot 3**
+  - Spring Web (REST API)
+  - Spring Data JPA (Hibernate)
+- **Oracle Database 19c**
+- **Maven**
+- **Python 3.12** (for data scripts)
+  - `yfinance` (market data)
+  - `oracledb` (DB connector)
+- **SLF4J + Logback** (logging)
+- **JUnit & Mockito** (testing)
 
 ---
 
-## 📊 API Overview
+## Features
 
-### 📈 STOCKS
-
-| Method | Endpoint                             | Description                        |
-|--------|---------------------------------------|------------------------------------|
-| GET    | `/investment-manager/all-stocks`     | Get all stocks                     |
-| GET    | `/investment-manager/all-stocks/by-ticker` | Get a stock by ticker       |
-| GET    | `/investment-manager/all-stocks/{sector}`  | Filter stocks by sector      |
-| GET    | `/investment-manager/my-stocks`      | Get current holdings               |
-| GET    | `/investment-manager/my-stocks/by-ticker` | Get current stock by ticker |
-| POST   | `/investment-manager/my-stocks/add-stock` | Add a stock to wallet       |
-| DELETE | `/investment-manager/my-stocks/{ticker}` | Delete a stock from wallet  |
-
-### 💰 ETFs
-
-| Method | Endpoint                                | Description                          |
-|--------|------------------------------------------|--------------------------------------|
-| GET    | `/investment-manager/all-etf`           | List all ETFs                        |
-| GET    | `/investment-manager/all-etf/by-ticker` | Get ETF by ticker                    |
-| GET    | `/investment-manager/all-etf/{theme}`   | Filter ETFs by theme                 |
-| POST   | `/investment-manager/all-etf/add-etf`   | Add a new ETF to repository          |
-| GET    | `/investment-manager/my-etf`            | List currently owned ETFs            |
-| GET    | `/investment-manager/my-etf/by-ticker`  | Get owned ETF by ticker              |
-| POST   | `/investment-manager/my-etf/add-etf`    | Add ETF to your wallet               |
+- Track **current holdings** (stocks, ETFs, crypto)
+- Store **historical prices**
+- Insert and update market data from external APIs
+- REST endpoints for managing and retrieving portfolio data
+- Python scripts for **automated ingestion** of fresh data into Oracle
 
 ---
 
-## 🧪 Want to test without a database?
+## Python Integration
 
-Check out the lightweight version of The-InvestorThing with in-memory storage:
+This project includes Python scripts under `scripts/` to populate the database with fresh market data.
 
-👉 [`in-memory-version`](https://github.com/hemuba/the-investorthing-backend/tree/in-memory-version)
+- `update_crypto_history.py` → updates `CRYPTO_HISTORY` table
+- `update_etf_history.py` → updates `ETF_HISTORY` table
 
-- ✅ All REST methods (GET, POST, PUT, PATCH, DELETE)
-- ✅ Works without Oracle DB
-- 🚫 No persistence after restart
-
-Perfect for demos, frontend testing, or rapid prototyping.
-
----
-
-## ⚙️ Run Locally
-
+**Execution:**
 ```bash
-# Clone the project
-git clone https://github.com/hemuba/the-investorthing-backend.git
-cd the-investorthing-backend
-
-# Run with development profile
-./mvnw spring-boot:run -Dspring.profiles.active=dev
+python scripts/update_crypto_history.py
 ```
 
-## 👤 Author
+---
 
-**Alessandro De Vincenti**  
-Software Engineer  
-💻 Java | Spring Boot | PL/SQL | Bash | Python  
+## Disclaimer
+
+This project uses the [`yfinance`](https://github.com/ranaroussi/yfinance) library to download public market data.  
+**The data is used exclusively for educational and personal use. No data is redistributed or monetized.**
 
 ---
 
-## 📌 License
+## Running the Backend
+
+1. Configure Oracle DB and environment variables:
+    - `SCHEMA_PASSWORD`
+    - `DSN` (e.g., `localhost:1521/XXXX`)
+2. Start the Spring Boot backend:
+```bash
+./mvnw spring-boot:run
+```
+
+---
+
+## Project Structure (Backend)
+
+```
+theinvestorthing-backend/
+│
+├── src/main/java/com/theinvestorthing/backend/
+│ ├── common/
+│ ├── crypto/
+│ ├── etf/
+│ ├── stocks/
+│ └── TheInvestorThingApplication.java
+│
+├── scripts/
+│ ├── crypto_updates/
+│ │ └── update_crypto_history.py
+│ ├── etf_updates/
+│ │ └── update_etf_history.py
+│ ├── common/
+│ │	└── db_connection.py
+│ └── logs/ # gitignored
+│
+├── logs/ # gitignored
+├── .gitignore
+├── README.md
+└── pom.xml
+```
+
+---
+
+##  Roadmap
+
+- [x] Backend Spring Boot setup
+- [x] Oracle DB integration
+- [x] Crypto & ETF tracking via Python
+- [ ] Frontend UI (React/TypeScript)
+- [ ] User authentication
+- [ ] Real-time dashboards
+- [ ] Portfolio analytics
+
+---
+
+## Author
+
+**Alessandro De Vincenti**  
+Software Engineer 
+Passionate about software engineering and automation.
+
+---
+
+## License
 
 This project is licensed under the MIT License.

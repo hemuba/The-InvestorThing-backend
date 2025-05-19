@@ -94,8 +94,8 @@ with get_connection() as connection:
                         row['VOLUME'],
                     ))
                 except oracledb.DatabaseError as e:
-                    logging.error(f"Eror during the update for Crypto {symbol} for date  {idx.date()}: {e}")
-                    print(f"Eror during the update for Crypto {symbol} for date  {idx.date()}: {e}")
+                    logging.error(f"Error during the update for Crypto {symbol} for date  {idx.date()}: {e}")
+                    print(f"Error during the update for Crypto {symbol} for date  {idx.date()}: {e}")
                     continue
 
             connection.commit()
@@ -104,6 +104,7 @@ with get_connection() as connection:
             requests_counter += 1
 
             if requests_counter % 300 == 0 and requests_counter > 0:
+                logging.info("Sleeping 120 sec.")
                 print("sleeping 120 sec.")
                 time.sleep(120)
 

@@ -102,6 +102,7 @@ with get_connection() as connection:
             requests_counter += 1
 
             if requests_counter % 300 == 0 and requests_counter > 0:
+                logging.info("Sleeping 120 sec.")
                 print("sleeping 120 sec.")
                 time.sleep(120)
 

@@ -6,6 +6,7 @@ public class CryptoDTOResp {
 
     private String name;
 
+
     private String sector;
 
     public CryptoDTOResp() {

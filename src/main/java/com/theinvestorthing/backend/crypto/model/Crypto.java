@@ -1,10 +1,9 @@
 package com.theinvestorthing.backend.crypto.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "CRYPTO", schema = "IM")
@@ -19,6 +18,9 @@ public class Crypto {
 
     @Column(name = "SECTOR")
     private String sector;
+
+    @OneToMany(mappedBy = "id.crypto", fetch = FetchType.LAZY)
+    private List<CryptoHistory> hist;
 
     public Crypto() {
     }
@@ -52,5 +54,9 @@ public class Crypto {
 
     public void setSector(String sector) {
         this.sector = sector;
+    }
+
+    public List<CryptoHistory> getHist() {
+        return hist;
     }
 }

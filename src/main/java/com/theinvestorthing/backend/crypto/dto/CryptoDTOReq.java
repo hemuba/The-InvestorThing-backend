@@ -2,8 +2,14 @@ package com.theinvestorthing.backend.crypto.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.cglib.core.Local;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class CryptoDTOReq {
+
+    private LocalDate data;
 
     @NotBlank(message = "Symbol cannot be blank")
     private String symbol;
@@ -15,10 +21,19 @@ public class CryptoDTOReq {
     public CryptoDTOReq() {
     }
 
-    public CryptoDTOReq(String symbol, String name, String sector) {
+    public CryptoDTOReq(LocalDate data, String symbol, String name, String sector) {
+        this.data =  data;
         this.symbol = symbol;
         this.name = name;
         this.sector = sector;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     public String getSymbol() {

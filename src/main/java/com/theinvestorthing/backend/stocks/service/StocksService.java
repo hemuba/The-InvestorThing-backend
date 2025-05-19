@@ -27,7 +27,7 @@ public class StocksService {
         this.myStocksRepository = myStocksRepository;
     }
 
-        // GET from STOCKS Table
+        // GET methods
     public List<StockDTOResp> getAllStocks(){
        return stocksRepository.findAll().stream()
                .map(StockMapper::toStockResp)
@@ -51,43 +51,6 @@ public class StocksService {
     }
 
 
-        // GET from CURRENT_STOCKS Table
-    public List<MyStockDTOResp> getAllMyStocks(){
-        return myStocksRepository.findAll().stream()
-                .map(StockMapper::toMyStockResp)
-                .toList();
-    }
-
-    public MyStockDTOResp getMyStockByTicker(String ticker){
-        MyStock stock = myStocksRepository.findByTickerIgnoreCase(ticker)
-                .orElseThrow( () -> new NotFoundException("Stock " + ticker + " not found in the Database"));
-        return StockMapper.toMyStockResp(stock);
-    }
-
-    // DELETE from CURRENT_STOCKS Table
-    @Transactional
-    public String deleteFromCurrentStocks(String ticker){
-       if (myStocksRepository.findByTickerIgnoreCase(ticker).isEmpty()){
-        throw new NotFoundException("Ticker " + ticker.toUpperCase() + " not found in your wallet!");
-       }
-        myStocksRepository.deleteByTickerIgnoreCase(ticker);
-        return "Stock " + ticker.toUpperCase() + " removed from your wallet!";
-    }
-
-
-    // POST to CURRENT_STOCKS Table
-
-    public MyStockDTOResp addToMyStocks(MyStockDTOReq stockDTOReq){
-        if (stocksRepository.findByTickerIgnoreCase(stockDTOReq.getTicker()).isEmpty()){
-            throw new NotFoundException("Stock " + stockDTOReq.getTicker().toUpperCase() + " not found in the Stocks repository, hence cannot be added to your wallet");
-        }
-        if (myStocksRepository.findByTickerIgnoreCase(stockDTOReq.getTicker()).isPresent()){
-            throw new BadRequestException("Stock " + stockDTOReq.getTicker().toUpperCase() + " already present in your Wallet");
-        }
-        MyStock myStock = StockMapper.toMyStockEntity(stockDTOReq);
-        myStocksRepository.save(myStock);
-        return StockMapper.toMyStockResp(myStock);
-    }
 
 
 

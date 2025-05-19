@@ -1,13 +1,11 @@
 package com.theinvestorthing.backend.crypto.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "CURRENT_CRYPTO", schema= "IM")
@@ -105,4 +103,5 @@ public class MyCrypto {
     public void setBuyDate(LocalDate buyDate) {
         this.buyDate = buyDate;
     }
+
 }

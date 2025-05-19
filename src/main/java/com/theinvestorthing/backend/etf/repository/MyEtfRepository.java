@@ -15,4 +15,10 @@ public interface MyEtfRepository extends JpaRepository<MyEtf, String> {
 
     List<MyEtf> buyDateGreaterThan(LocalDate buyDate);
 
+
+
+
+
+
+
 }

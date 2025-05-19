@@ -44,7 +44,7 @@ public class CryptoController {
     @GetMapping("/my-crypto")
     public ResponseEntity<ApiResponse> getAllMyCrypto(){
         List<MyCryptoDTOResp> obj = cryptoService.getAllMyCrypto();
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Wallet", obj));
+        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Your Crypto Wallet - current Crypto: " + obj.size(), obj));
     }
 
     @GetMapping("/my-crypto/by-symbol")

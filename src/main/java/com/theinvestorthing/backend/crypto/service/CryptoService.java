@@ -12,6 +12,7 @@ import com.theinvestorthing.backend.crypto.model.Crypto;
 import com.theinvestorthing.backend.crypto.model.MyCrypto;
 import com.theinvestorthing.backend.crypto.repository.CryptoRepository;
 import com.theinvestorthing.backend.crypto.repository.MyCryptoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +62,15 @@ public class CryptoService {
                 .orElseThrow( () -> new NotFoundException("Crypto " + symbol.toUpperCase() + " not found in your wallet."));
         return CryptoMapper.toMyCryptoResponse(myCrypto);
     }
+
+    //DELETE method from CURRENT_CRYPTO
+    @Transactional
+    public String deleteFromCurrentCrypto(String symbol){
+        if (myCryptoRepository.findBySymbolIgnoreCase(symbol).isEmpty()){
+            throw new NotFoundException("Crypto " + symbol.toUpperCase() + " not found in your wallet.");
+        }
+        myCryptoRepository.deleteBySymbolIgnoreCase(symbol);
+        return "Crypto " + symbol.toUpperCase() + " removed from your wallet.";    }
 
     // POST methods to CURRENT_CRYPTO
 

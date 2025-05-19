@@ -1,7 +1,8 @@
 # Compiled files and build output
 target/
 build/
-logs/
+/logs
+**/logs/
 *.class
 *.jar
 *.war

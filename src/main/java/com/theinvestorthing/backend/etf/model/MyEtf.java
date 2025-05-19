@@ -1,10 +1,7 @@
 package com.theinvestorthing.backend.etf.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +9,10 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "CURRENT_ETF", schema = "IM")
 public class MyEtf {
+
+    @ManyToOne
+    @JoinColumn(name = "TICKER", referencedColumnName = "TICKER", insertable = false, updatable = false)
+    private Etf etf;
 
     @Id
     @Column(name = "TICKER")

@@ -67,6 +67,6 @@ public class EtfMapper {
           currentTotal,
           req.getBuyDate()
         );
-
     }
+
 }

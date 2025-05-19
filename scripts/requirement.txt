@@ -1,0 +1,6 @@
+yfinance
+oracledb
+os
+logging
+datetime
+pyyaml

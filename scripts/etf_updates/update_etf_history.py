@@ -53,7 +53,8 @@ with get_connection() as connection:
             logging.info(f'Downloading data for {ticker} from: {next_date} until today...')
             print(f'Downloading data for {ticker} from: {next_date} until today...')
             etf = yf.Ticker(ticker)
-            hist = etf.history(start=next_date.date(), end=datetime.now().date(), interval='1d')
+            end_date = (datetime.now() + timedelta(days=1)).date()
+            hist = etf.history(start=next_date.date(), end=end_date, interval='1d')
 
             if hist.empty:
                 logging.warning(f'No data available for ETF: {ticker} for {next_date.date()}...')

@@ -19,9 +19,6 @@ public class Crypto {
     @Column(name = "SECTOR")
     private String sector;
 
-    @OneToMany(mappedBy = "id.crypto", fetch = FetchType.LAZY)
-    private List<CryptoHistory> hist;
-
     public Crypto() {
     }
 
@@ -56,7 +53,4 @@ public class Crypto {
         this.sector = sector;
     }
 
-    public List<CryptoHistory> getHist() {
-        return hist;
-    }
 }

@@ -17,6 +17,10 @@ public class MyCrypto {
     @Column(name="SYMBOL")
     private String symbol;
 
+    @ManyToOne
+    @JoinColumn(name = "SYMBOL", referencedColumnName = "SYMBOL", updatable = false, insertable = false)
+    private Crypto crypto;
+
     @Column(name = "NO_OF_COINS")
     private BigDecimal noOfCoins;
 
@@ -51,15 +55,16 @@ public class MyCrypto {
     public String getSymbol() {
         return symbol;
     }
-
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
+    public String getName() {return crypto.getName();}
+
+
     public BigDecimal getNoOfCoins() {
         return noOfCoins;
     }
-
     public void setNoOfCoins(BigDecimal noOfCoins) {
         this.noOfCoins = noOfCoins;
     }
@@ -67,41 +72,24 @@ public class MyCrypto {
     public BigDecimal getPurchasePrice() {
         return purchasePrice;
     }
+    public void setPurchasePrice(BigDecimal purchasePrice) {this.purchasePrice = purchasePrice;}
 
-    public void setPurchasePrice(BigDecimal purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
+    public BigDecimal getCurrentPrice() {return currentPrice;}
 
-    public BigDecimal getCurrentPrice() {
-        return currentPrice;
-    }
+    public void setCurrentPrice(BigDecimal currentPrice) {this.currentPrice = currentPrice;}
 
-    public void setCurrentPrice(BigDecimal currentPrice) {
-        this.currentPrice = currentPrice;
-    }
+    public BigDecimal getCurrentReturn() {return currentReturn;}
 
-    public BigDecimal getCurrentReturn() {
-        return currentReturn;
-    }
+    public void setCurrentReturn(BigDecimal currentReturn) {this.currentReturn = currentReturn;}
 
-    public void setCurrentReturn(BigDecimal currentReturn) {
-        this.currentReturn = currentReturn;
-    }
-
-    public BigDecimal getCurrentTotal() {
-        return currentTotal;
-    }
+    public BigDecimal getCurrentTotal() {return currentTotal;}
 
     public void setCurrentTotal(BigDecimal currentTotal) {
         this.currentTotal = currentTotal;
     }
 
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
+    public LocalDate getBuyDate() {return buyDate;}
 
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
-    }
+    public void setBuyDate(LocalDate buyDate) {this.buyDate = buyDate;}
 
 }

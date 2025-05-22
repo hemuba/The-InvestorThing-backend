@@ -9,6 +9,8 @@ public class MyCryptoDTOResp {
 
     private String symbol;
 
+    private String name;
+
     private BigDecimal noOfCoins;
 
     private BigDecimal purchasePrice;
@@ -21,8 +23,9 @@ public class MyCryptoDTOResp {
 
     private LocalDate buyDate;
 
-    public MyCryptoDTOResp(String symbol, BigDecimal noOfCoins, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal, LocalDate buyDate) {
+    public MyCryptoDTOResp(String symbol, String name, BigDecimal noOfCoins, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal, LocalDate buyDate) {
         this.symbol = symbol;
+        this.name = name;
         this.noOfCoins = noOfCoins;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
@@ -37,6 +40,9 @@ public class MyCryptoDTOResp {
     public String getSymbol() {
         return symbol;
     }
+
+    public String getName() { return this.name; }
+    public void setName(String name) {this.name = name;}
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;

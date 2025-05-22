@@ -52,7 +52,8 @@ with get_connection() as connection:
                 logging.info(f'Downloading data for {symbol} from: {next_date} until today...')
                 print(f'Downloading data for {symbol} from: {next_date} until today...')
                 crypto = yf.Ticker(symbol)
-                hist = crypto.history(start=next_date.date(), end=datetime.now().date(), interval='1d')
+                end_date = (datetime.now() + timedelta(days=1)).date()
+                hist = crypto.history(start=next_date.date(), end=end_date, interval="1d")
             except Exception as e:
                 logging.error(f"Error during processing of {symbol}: {e}", exc_info=True)
                 print(f"Error during processing of {symbol}: {e}")

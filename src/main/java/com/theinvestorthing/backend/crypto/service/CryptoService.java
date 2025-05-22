@@ -20,15 +20,10 @@ import java.util.List;
 public class CryptoService {
 
     private final CryptoRepository cryptoRepository;
-    private final MyCryptoRepository myCryptoRepository;
-    private final CryptoHistoryRepository cryptoHistoryRepository;
-    private final CryptoMapper cryptoMapper;
+
 
     public CryptoService(CryptoRepository cryptoRepository, MyCryptoRepository myCryptoRepository, CryptoHistoryRepository cryptoHistoryRepository, CryptoMapper cryptoMapper) {
         this.cryptoRepository = cryptoRepository;
-        this.myCryptoRepository = myCryptoRepository;
-        this.cryptoHistoryRepository = cryptoHistoryRepository;
-        this.cryptoMapper = cryptoMapper;
     }
 
     // GET Methods

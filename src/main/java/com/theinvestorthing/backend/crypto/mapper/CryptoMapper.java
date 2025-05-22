@@ -21,6 +21,7 @@ public class CryptoMapper {
         this.cryptoRepository = cryptoRepository;
     }
 
+
     public static Crypto toMyCryptoEntity(CryptoDTOReq req){
         return new Crypto(
                 req.getSymbol(),
@@ -40,7 +41,6 @@ public class CryptoMapper {
     public static MyCrypto toMyCryptoEntity(MyCryptoDTOReq req){
         BigDecimal currentReturn = req.getCurrentPrice().subtract(req.getPurchasePrice()).multiply(req.getNoOfCoins()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = req.getCurrentPrice().multiply(req.getNoOfCoins()).setScale(2, RoundingMode.HALF_UP);
-
         return new MyCrypto(
             req.getSymbol(),
             req.getNoOfCoins(),
@@ -56,9 +56,10 @@ public class CryptoMapper {
 
         BigDecimal currentReturn = req.getCurrentPrice().subtract(req.getPurchasePrice()).multiply(req.getNoOfCoins()).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = req.getCurrentPrice().multiply(req.getNoOfCoins()).setScale(2, RoundingMode.HALF_UP);
-
+        String name = req.getName() == null ? "N/A" : req.getName();
         return new MyCryptoDTOResp(
                 req.getSymbol(),
+                name,
                 req.getNoOfCoins(),
                 req.getPurchasePrice(),
                 req.getCurrentPrice(),
@@ -69,13 +70,9 @@ public class CryptoMapper {
     }
 
     public CryptoHistory toCryptoHistoryEntity(CryptoHistoryDTOReq req){
-        Crypto Crypto = cryptoRepository.findBySymbolIgnoreCase(req.getSymbol())
-                .orElseThrow(() -> new NotFoundException(("Crypto " + req.getSymbol().toUpperCase() + " not found in your wallet")));
-
-        CryptoHistoryId id = new CryptoHistoryId(Crypto, req.getData());
-
+        CryptoHistoryId id = new CryptoHistoryId(req.getSymbol(), req.getData());
         return new CryptoHistory(
-          id,
+                id,
           req.getOpenPrice().setScale(2, RoundingMode.HALF_UP),
           req.getHighPrice().setScale(2, RoundingMode.HALF_UP),
           req.getLowPrice().setScale(2, RoundingMode.HALF_UP),
@@ -87,7 +84,7 @@ public class CryptoMapper {
     public CryptoHistoryDTOResp toCryptoHistoryResp(CryptoHistory req){
         return new CryptoHistoryDTOResp(
                 req.getId().getData(),
-                req.getId().getCrypto().getSymbol(),
+                req.getId().getSymbol(),
                 req.getOpenPrice().setScale(2, RoundingMode.HALF_UP),
                 req.getHighPrice().setScale(2, RoundingMode.HALF_UP),
                 req.getLowPrice().setScale(2, RoundingMode.HALF_UP),

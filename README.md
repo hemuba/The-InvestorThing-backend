@@ -109,7 +109,7 @@ theinvestorthing-backend/
 
 ## Author
 
-**Alessandro De Vincenti** & friend :)
+**Alessandro De Vincenti**
 Software Engineer 
 Passionate about software engineering and automation.
 

@@ -11,6 +11,10 @@ public class CryptoHistory {
     @EmbeddedId
     private CryptoHistoryId id;
 
+    @ManyToOne
+    @JoinColumn(name = "SYMBOL", referencedColumnName = "SYMBOL", updatable = false, insertable = false)
+    Crypto crypto;
+
     @Column(name = "OPEN_PRICE")
     private BigDecimal openPrice;
 
@@ -45,6 +49,8 @@ public class CryptoHistory {
     public void setId(CryptoHistoryId id) {
         this.id = id;
     }
+
+    public String getName(){ return crypto.getName();}
 
     public BigDecimal getOpenPrice() {
         return openPrice;

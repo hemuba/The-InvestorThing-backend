@@ -14,7 +14,7 @@ public interface MyCryptoRepository extends JpaRepository<MyCrypto, String> {
     Optional<MyCrypto> findBySymbolIgnoreCase(String symbol);
 
     @Modifying(clearAutomatically = true)
-    @Query("DELETE FROM MyCrypto c WHERE upper(c.symbol) = upper(:symbol)")
+    @Query("DELETE FROM MyCrypto c WHERE upper(c.symbol) = upper(:symbol) ")
     void deleteBySymbolIgnoreCase(String symbol);
 }
 

@@ -85,6 +85,7 @@ public class CryptoMapper {
         return new CryptoHistoryDTOResp(
                 req.getId().getData(),
                 req.getId().getSymbol(),
+                req.getName(),
                 req.getOpenPrice().setScale(2, RoundingMode.HALF_UP),
                 req.getHighPrice().setScale(2, RoundingMode.HALF_UP),
                 req.getLowPrice().setScale(2, RoundingMode.HALF_UP),

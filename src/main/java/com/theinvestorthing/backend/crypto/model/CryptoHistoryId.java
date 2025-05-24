@@ -1,6 +1,8 @@
 package com.theinvestorthing.backend.crypto.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serial;
 import java.io.Serializable;

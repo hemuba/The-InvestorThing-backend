@@ -9,6 +9,8 @@ public class CryptoHistoryDTOResp {
 
     private String symbol;
 
+    private String name;
+
     private BigDecimal openPrice;
 
     private BigDecimal highPrice;
@@ -22,9 +24,10 @@ public class CryptoHistoryDTOResp {
     public CryptoHistoryDTOResp() {
     }
 
-    public CryptoHistoryDTOResp( LocalDate data, String symbol, BigDecimal openPrice, BigDecimal highPrice, BigDecimal lowPrice, BigDecimal closePrice, BigDecimal volume) {
+    public CryptoHistoryDTOResp( LocalDate data, String symbol, String name,  BigDecimal openPrice, BigDecimal highPrice, BigDecimal lowPrice, BigDecimal closePrice, BigDecimal volume) {
         this.data = data;
         this.symbol = symbol;
+        this.name = name;
         this.openPrice = openPrice;
         this.highPrice = highPrice;
         this.lowPrice = lowPrice;
@@ -46,6 +49,14 @@ public class CryptoHistoryDTOResp {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 

@@ -28,29 +28,29 @@ public class EtfController {
 
     //GET Methods
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllEtf(){
+    public ResponseEntity<ApiResponse<List<EtfDTOResp>>> getAllEtf(){
         List<EtfDTOResp> obj = etfService.getAllEtf();
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "All ETF", obj));
+        return ResponseEntity.status(200).body(new ApiResponse<List<EtfDTOResp>>(LocalDateTime.now(), 200, "All ETF", obj));
     }
 
     @GetMapping("/{theme}")
-    public ResponseEntity<ApiResponse> getAllEfByTheme(@PathVariable String theme){
+    public ResponseEntity<ApiResponse<List<EtfDTOResp>>> getAllEfByTheme(@PathVariable String theme){
         List<EtfDTOResp> obj = etfService.getEtfByTheme(theme);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "ETF by Theme", obj));
+        return ResponseEntity.status(200).body(new ApiResponse<List<EtfDTOResp>>(LocalDateTime.now(), 200, "ETF by Theme", obj));
     }
 
     @GetMapping("/by-ticker")
-    public ResponseEntity<ApiResponse> getEtfByTicker(@RequestParam String ticker){
+    public ResponseEntity<ApiResponse<EtfDTOResp>> getEtfByTicker(@RequestParam String ticker){
         EtfDTOResp obj = etfService.getEtfByTicker(ticker);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "ETF", obj));
+        return ResponseEntity.status(200).body(new ApiResponse<EtfDTOResp>(LocalDateTime.now(), 200, "ETF", obj));
     }
 
     //POST Methods
 
     @PostMapping("/add-etf")
-    public ResponseEntity<ApiResponse> addToAllEf(@Valid @RequestBody EtfDTOReq etfDTOReq){
+    public ResponseEntity<ApiResponse<EtfDTOResp>> addToAllEf(@Valid @RequestBody EtfDTOReq etfDTOReq){
         EtfDTOResp obj = etfService.addToAllEtf(etfDTOReq);
-        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "ETF " + etfDTOReq.getTicker() + " added to the ETF repository", obj));
+        return ResponseEntity.status(201).body(new ApiResponse<EtfDTOResp>(LocalDateTime.now(), 201, "ETF " + etfDTOReq.getTicker() + " added to the ETF repository", obj));
     }
 
 

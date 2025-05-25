@@ -28,31 +28,31 @@ public class MyStocksController {
     // GET methods
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getMyStocks(){
+    public ResponseEntity<ApiResponse<List<MyStockDTOResp>>> getMyStocks(){
         List<MyStockDTOResp> myStocks = myStockService.getAllMyStocks();
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Your current stocks", myStocks));
+        return ResponseEntity.status(200).body(new ApiResponse<List<MyStockDTOResp>>(LocalDateTime.now(), 200, "Your current stocks", myStocks));
 
     }
 
     @GetMapping("/by-ticker")
-    public ResponseEntity<ApiResponse> getMyStockByTicker(@RequestParam String ticker){
+    public ResponseEntity<ApiResponse<MyStockDTOResp>> getMyStockByTicker(@RequestParam String ticker){
         MyStockDTOResp myStock = myStockService.getMyStockByTicker(ticker);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Stock " + ticker.toUpperCase(), myStock));
+        return ResponseEntity.status(200).body(new ApiResponse<MyStockDTOResp>(LocalDateTime.now(), 200, "Stock " + ticker.toUpperCase(), myStock));
     }
 
     // DELETE methods
 
     @DeleteMapping("/{ticker}")
-    public ResponseEntity<ApiResponse> deleteFromMyStocks(@PathVariable String ticker){
+    public ResponseEntity<ApiResponse<List<MyStockDTOResp>>> deleteFromMyStocks(@PathVariable String ticker){
         String message = myStockService.deleteFromCurrentStocks(ticker);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, message, myStockService.getAllMyStocks()));
+        return ResponseEntity.status(200).body(new ApiResponse<List<MyStockDTOResp>>(LocalDateTime.now(), 200, message, myStockService.getAllMyStocks()));
     }
 
     // POST methods
 
     @PostMapping("/add-stock")
-    public ResponseEntity<ApiResponse> addToMyStock(@Valid @RequestBody MyStockDTOReq myStockDTOReq){
+    public ResponseEntity<ApiResponse<MyStockDTOResp>> addToMyStock(@Valid @RequestBody MyStockDTOReq myStockDTOReq){
         MyStockDTOResp obj = myStockService.addToMyStocks(myStockDTOReq);
-        return ResponseEntity.status(201).body(new ApiResponse(LocalDateTime.now(), 201, "Stock " + myStockDTOReq.getTicker() + " added to your wallet!", obj));
+        return ResponseEntity.status(201).body(new ApiResponse<MyStockDTOResp>(LocalDateTime.now(), 201, "Stock " + myStockDTOReq.getTicker() + " added to your wallet!", obj));
     }
 }

@@ -28,24 +28,24 @@ public class MyCryptoController {
     // GET methods
 
     @GetMapping()
-    public ResponseEntity<ApiResponse> getAllMyCrypto(){
+    public ResponseEntity<ApiResponse<List<MyCryptoDTOResp>>> getAllMyCrypto(){
         List<MyCryptoDTOResp> obj = myCryptoService.getAllMyCrypto();
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Your Crypto Wallet - current Crypto: " + obj.size(), obj));
+        return ResponseEntity.status(200).body(new ApiResponse<List<MyCryptoDTOResp>>(LocalDateTime.now(), 200, "Your Crypto Wallet - current Crypto: " + obj.size(), obj));
     }
 
     @GetMapping("/by-symbol")
-    public ResponseEntity<ApiResponse> getMyCryptoBySymbol(@RequestParam String symbol){
+    public ResponseEntity<ApiResponse<MyCryptoDTOResp>> getMyCryptoBySymbol(@RequestParam String symbol){
         MyCryptoDTOResp obj = myCryptoService.getMyCryptoBySymbol(symbol);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
+        return ResponseEntity.status(200).body(new ApiResponse<MyCryptoDTOResp>(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
     }
 
     // POST methods
     @PostMapping("/add-crypto")
-    public ResponseEntity<ApiResponse> addToMyCrypto(
+    public ResponseEntity<ApiResponse<MyCryptoDTOResp>> addToMyCrypto(
             @Valid @RequestBody MyCryptoDTOReq req
     ){
         MyCryptoDTOResp obj = myCryptoService.addToMyCrypto(req);
         return ResponseEntity.status(201).body(
-                new ApiResponse(LocalDateTime.now(), 201, "Crypto " + req.getSymbol().toUpperCase() + " added to your wallet!", obj));
+                new ApiResponse<MyCryptoDTOResp>(LocalDateTime.now(), 201, "Crypto " + req.getSymbol().toUpperCase() + " added to your wallet!", obj));
     }
 }

@@ -28,21 +28,21 @@ public class StocksController {
     // GET methods
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllStocks(){
+    public ResponseEntity<ApiResponse<List<StockDTOResp>>> getAllStocks(){
         List<StockDTOResp> allStocks = stocksService.getAllStocks();
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "All Stocks", allStocks));
+        return ResponseEntity.status(200).body(new ApiResponse<List<StockDTOResp>>(LocalDateTime.now(), 200, "All Stocks", allStocks));
     }
 
     @GetMapping("/by-ticker")
-    public ResponseEntity<ApiResponse> getStockByTicker(@RequestParam String ticker){
+    public ResponseEntity<ApiResponse<StockDTOResp>> getStockByTicker(@RequestParam String ticker){
         StockDTOResp stock = stocksService.getStockByTicker(ticker);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Stock", stock));
+        return ResponseEntity.status(200).body(new ApiResponse<StockDTOResp>(LocalDateTime.now(), 200, "Stock", stock));
     }
 
     @GetMapping("/{sector}")
-    public ResponseEntity<ApiResponse> getStocksBySector(@PathVariable String sector){
+    public ResponseEntity<ApiResponse<List<StockDTOResp>>> getStocksBySector(@PathVariable String sector){
         List<StockDTOResp> stocks = stocksService.getAllStocksBySector(sector);
-        return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Stocks by Sector " + sector.toUpperCase(), stocks));
+        return ResponseEntity.status(200).body(new ApiResponse<List<StockDTOResp>>(LocalDateTime.now(), 200, "Stocks by Sector " + sector.toUpperCase(), stocks));
     }
 
 

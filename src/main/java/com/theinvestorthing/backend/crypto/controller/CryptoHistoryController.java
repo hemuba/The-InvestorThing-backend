@@ -30,9 +30,9 @@ public class CryptoHistoryController {
 
     // GET methods
     @GetMapping("/by-symbol")
-    public ResponseEntity<ApiResponse> getHistoryBySymbol(@RequestParam String symbol){
+    public ResponseEntity<ApiResponse<List<CryptoHistoryDTOResp>>> getHistoryBySymbol(@RequestParam String symbol){
         List<CryptoHistoryDTOResp> obj = cryptoHistoryService.getHistoryBySymbol(symbol);
-        return ResponseEntity.status(200).body(new ApiResponse(
+        return ResponseEntity.status(200).body(new ApiResponse<List<CryptoHistoryDTOResp>>(
                 LocalDateTime.now(),
                 200,
                 "History for " + symbol.toUpperCase(),

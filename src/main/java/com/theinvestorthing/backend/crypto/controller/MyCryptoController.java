@@ -39,7 +39,6 @@ public class MyCryptoController {
         return ResponseEntity.status(200).body(new ApiResponse(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
     }
 
-
     // POST methods
     @PostMapping("/add-crypto")
     public ResponseEntity<ApiResponse> addToMyCrypto(

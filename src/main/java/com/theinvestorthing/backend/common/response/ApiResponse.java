@@ -2,13 +2,13 @@ package com.theinvestorthing.backend.common.response;
 
 import java.time.LocalDateTime;
 
-public class ApiResponse {
+public class ApiResponse<T>{
     private LocalDateTime timestamp;
     private int status;
     private String message;
-    private Object object;
+    private T object;
 
-    public ApiResponse(LocalDateTime timestamp, int status, String message, Object object) {
+    public ApiResponse(LocalDateTime timestamp, int status, String message, T object) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
@@ -31,11 +31,11 @@ public class ApiResponse {
         this.message = message;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(T object) {
         this.object = object;
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface CryptoHistoryRepository extends JpaRepository<CryptoHistory, CryptoHistoryId> {
 
-    @Query("SELECT h FROM CryptoHistory h WHERE UPPER(h.crypto.symbol) = UPPER(:symbol) ORDER BY h.id.data DESC")
+    @Query("SELECT h FROM CryptoHistory h WHERE UPPER(h.id.symbol) = UPPER(:symbol) ORDER BY h.id.data DESC")
     List<CryptoHistory> findHistoryBySymbolIgnoreCase(@Param("symbol") String symbol);
 
 

@@ -1,5 +1,6 @@
 package com.theinvestorthing.backend.analytics.service;
 
+import com.theinvestorthing.backend.analytics.config.ServerConfig;
 import com.theinvestorthing.backend.common.response.ApiResponse;
 import com.theinvestorthing.backend.crypto.dto.CryptoDTOResp;
 import com.theinvestorthing.backend.crypto.dto.MyCryptoDTOResp;
@@ -8,26 +9,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class AnalyticsService {
 
+
     private final WebClient webClient;
 
-    public AnalyticsService(WebClient.Builder builder) {
+    public AnalyticsService(WebClient.Builder builder, ServerConfig config) {
+        String baseUrl = String.format("%s://%s:%d/%s",
+                config.getProtocol(),
+                config.getEnv(),
+                config.getPort(),
+                config.getMainRoute());
+
         this.webClient = builder
-                .baseUrl("http://localhost:8080/the-investorthing")
-                .build();
+                .baseUrl(baseUrl).build();
     }
 
-    public Mono<ApiResponse<CryptoDTOResp>> getCryptoBySymbol(String symbol) {
+    public Mono<ApiResponse<List<MyCryptoDTOResp>>> getWallet() {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/all-crypto/by-symbol")
-                        .queryParam("symbol", symbol)
+                        .path("/my-crypto")
                         .build())
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<ApiResponse<CryptoDTOResp>>() {})
-                .doOnError(err -> err.printStackTrace());
+                .bodyToMono(new ParameterizedTypeReference<ApiResponse<List<MyCryptoDTOResp>>>() {});
+
 
     }
 

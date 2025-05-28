@@ -6,4 +6,5 @@ pwd = os.getenv("IM_PASSWORD")
 dsn = os.getenv("DSN")
 
 def get_connection():
+    """Centralized db connection"""
     return odb.connect(user=usr, password=pwd, dsn=dsn)

@@ -8,9 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
-public class TheInvestorThingApplication {
+public class TheInvestorThingBE {
 
-	private static final Logger logger = LoggerFactory.getLogger(TheInvestorThingApplication.class);
+	private static final Logger logger = LoggerFactory.getLogger(TheInvestorThingBE.class);
+
+	@Value("${spring.theinvestorthing.name}")
+	private String name;
 
 	@Value("${spring.theinvestorthing.version}")
 	private String version;
@@ -22,12 +25,12 @@ public class TheInvestorThingApplication {
 	private String module;
 
 	public static void main(String[] args) {
-		SpringApplication.run(TheInvestorThingApplication.class, args);
+		SpringApplication.run(TheInvestorThingBE.class, args);
 	}
 
 	@PostConstruct
 	private void appInfo(){
-		logger.info("Application Info - Module: {} | Version: {} | Author: {}",  module, version, author);
+		logger.info("Application Info - Name: {} | Module: {} | Version: {} | Author: {}", name, module, version, author);
 
 	}
 

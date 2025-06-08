@@ -28,24 +28,40 @@ public class MyCryptoController {
     // GET methods
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<MyCryptoDTOResp>>> getAllMyCrypto(){
+    public ResponseEntity<ApiResponse<List<MyCryptoDTOResp>>> getAllMyCrypto(@RequestHeader("x-trace-id") String traceId){
         List<MyCryptoDTOResp> obj = myCryptoService.getAllMyCrypto();
-        return ResponseEntity.status(200).body(new ApiResponse<List<MyCryptoDTOResp>>(LocalDateTime.now(), 200, "Your Crypto Wallet - current Crypto: " + obj.size(), obj));
+        return ResponseEntity.status(200).body(new ApiResponse<List<MyCryptoDTOResp>>(
+                LocalDateTime.now(),
+                200,
+                "Your Crypto Wallet - current Crypto: " + obj.size(),
+                obj,
+                traceId));
     }
 
     @GetMapping("/by-symbol")
-    public ResponseEntity<ApiResponse<MyCryptoDTOResp>> getMyCryptoBySymbol(@RequestParam String symbol){
+    public ResponseEntity<ApiResponse<MyCryptoDTOResp>> getMyCryptoBySymbol(@RequestHeader("x-trace-id") String traceId, @RequestParam String symbol){
         MyCryptoDTOResp obj = myCryptoService.getMyCryptoBySymbol(symbol);
-        return ResponseEntity.status(200).body(new ApiResponse<MyCryptoDTOResp>(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
+        return ResponseEntity.status(200).body(new ApiResponse<MyCryptoDTOResp>(
+                LocalDateTime.now(),
+                200,
+                "Crypto " + symbol.toUpperCase(),
+                obj,
+                traceId));
     }
 
     // POST methods
     @PostMapping("/add-crypto")
     public ResponseEntity<ApiResponse<MyCryptoDTOResp>> addToMyCrypto(
+            @RequestHeader("x-trace-id") String traceId,
             @Valid @RequestBody MyCryptoDTOReq req
     ){
         MyCryptoDTOResp obj = myCryptoService.addToMyCrypto(req);
         return ResponseEntity.status(201).body(
-                new ApiResponse<MyCryptoDTOResp>(LocalDateTime.now(), 201, "Crypto " + req.getSymbol().toUpperCase() + " added to your wallet!", obj));
+                new ApiResponse<MyCryptoDTOResp>(
+                        LocalDateTime.now(),
+                        201,
+                        "Crypto " + req.getSymbol().toUpperCase() + " added to your wallet!",
+                        obj,
+                        traceId));
     }
 }

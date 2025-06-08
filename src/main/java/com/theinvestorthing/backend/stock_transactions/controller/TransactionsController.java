@@ -8,9 +8,7 @@ import com.theinvestorthing.backend.stock_transactions.service.TransactionServic
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,24 +25,28 @@ public class TransactionsController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TransactionDTOResp>>> getAllTransaction(){
+    public ResponseEntity<ApiResponse<List<TransactionDTOResp>>> getAllTransaction(@RequestHeader("x-trace-id") String traceId){
         List<TransactionDTOResp> obj = transactionService.getAllTransactions();
         return ResponseEntity.ok().body(new ApiResponse<>(
                 LocalDateTime.now(),
                 HttpStatus.OK.value(),
                 "Success",
-                obj
+                obj,
+                traceId
         ));
     }
 
     @GetMapping("/by-ticker")
-    public ResponseEntity<ApiResponse<List<TransactionDTOResp>>> getTransactionsByTicker(String ticker){
+    public ResponseEntity<ApiResponse<List<TransactionDTOResp>>> getTransactionsByTicker(
+            @RequestHeader("x-trace-id") String traceId,
+            @RequestParam String ticker){
         List<TransactionDTOResp> obj = transactionService.getTransactionsByTicker(ticker);
         return ResponseEntity.ok().body(new ApiResponse<>(
                 LocalDateTime.now(),
                 HttpStatus.OK.value(),
                 "Success",
-                obj
+                obj,
+                traceId
         ));
     }
 }

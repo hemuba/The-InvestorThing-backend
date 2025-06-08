@@ -103,9 +103,16 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<String>> handlerGenericExceptions(Exception exception){
+    public ResponseEntity<ErrorResponse> handlerGenericExceptions(Exception exception, HttpServletRequest req){
         logger.error("500 an error occurred - please contact support or try again later.");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<String>(LocalDateTime.now(), 500, "An unexpected error occurred", "Please contact support or try again later"));
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(
+                LocalDateTime.now(),
+                500,
+                "An unexpected error occurred, Please contact support or try again later",
+                req.getRequestURI(),
+                errors));
     }
 
 

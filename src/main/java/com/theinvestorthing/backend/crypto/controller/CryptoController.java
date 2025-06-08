@@ -30,15 +30,25 @@ public class CryptoController {
     //GET methods
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<CryptoDTOResp>>> getAllCrypto(){
+    public ResponseEntity<ApiResponse<List<CryptoDTOResp>>> getAllCrypto(@RequestHeader("x-trace-id") String traceId){
         List<CryptoDTOResp> obj = cryptoService.getAllCrypto();
-        return ResponseEntity.status(200).body(new ApiResponse<List<CryptoDTOResp>>(LocalDateTime.now(), 200, "Crypto Repository", obj));
+        return ResponseEntity.status(200).body(new ApiResponse<List<CryptoDTOResp>>(
+                LocalDateTime.now(),
+                200,
+                "Crypto Repository",
+                obj, traceId
+        ));
     }
 
     @GetMapping("/by-symbol")
-    public ResponseEntity<ApiResponse<CryptoDTOResp>> getCryptoBySymbol(@RequestParam String symbol){
+    public ResponseEntity<ApiResponse<CryptoDTOResp>> getCryptoBySymbol(@RequestHeader("x-trace-id") String traceId, @RequestParam String symbol){
         CryptoDTOResp obj = cryptoService.getCryptoBySymbol(symbol);
-        return ResponseEntity.status(200).body(new ApiResponse<CryptoDTOResp>(LocalDateTime.now(), 200, "Crypto " + symbol.toUpperCase(), obj));
+        return ResponseEntity.status(200).body(new ApiResponse<CryptoDTOResp>(
+                LocalDateTime.now(),
+                200,
+                "Crypto " + symbol.toUpperCase(),
+                obj,
+                traceId));
     }
 
 

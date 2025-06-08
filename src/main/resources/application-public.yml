@@ -1,6 +1,11 @@
 spring:
+  theinvestorthing:
+    author: Alessandro De Vincenti
+    version: 0.1.1
+    module: backend
+    name: the-investorthing-be
   profiles:
-    active: prod
+    active: dev
 
 ---
 
@@ -32,12 +37,5 @@ spring:
 server:
   port: 8080
 
-theinvestorthing:
-  author: Alessandro De Vincenti
-  version: 0.1.1
-  module: backend
-  env: localhost
-  protocol: http
-  port: 8080
-  main-route: the-investorthing
+
 

@@ -1,6 +1,8 @@
 package com.theinvestorthing.backend.common.exception;
 
 import com.theinvestorthing.backend.common.response.ApiResponse;
+import com.theinvestorthing.backend.common.response.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
@@ -21,46 +23,82 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiResponse<NotFoundException>> handlerNotFound(NotFoundException exception){
+    public ResponseEntity<ErrorResponse> handlerNotFound(NotFoundException exception, HttpServletRequest req){
         logger.error("404 - {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<NotFoundException>(LocalDateTime.now(), 404, exception.getMessage(), null));
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                req.getRequestURI(),
+                errors));
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiResponse<BadRequestException>> handlerBadRequests(BadRequestException exception){
+    public ResponseEntity<ErrorResponse> handlerBadRequests(BadRequestException exception, HttpServletRequest req){
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", exception.getMessage());
         logger.error("400 - {}", exception.getMessage());
-        return ResponseEntity.badRequest().body(new ApiResponse<BadRequestException>(LocalDateTime.now(), 400, exception.getMessage(), null));
+        return ResponseEntity.badRequest().body(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                req.getRequestURI(),
+                errors));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Map<String, String>>> handlerDTOValidationErrors(MethodArgumentNotValidException exception){
+    public ResponseEntity<ErrorResponse> handlerDTOValidationErrors(MethodArgumentNotValidException exception, HttpServletRequest req){
         Map<String, String> errors = new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-        String message = "Validation failed for " + errors.size() + " field(s)";
         logger.error("400 - validation failed for {} filed(s).", errors.size());
-        return ResponseEntity.badRequest().body(new ApiResponse<Map<String, String>>(LocalDateTime.now(), 400, message, errors));
+        return ResponseEntity.badRequest().body(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                req.getRequestURI(),
+                errors));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiResponse<Map<String, String>>> handlerParamValidationErrors(ConstraintViolationException exception){
+    public ResponseEntity<ErrorResponse> handlerParamValidationErrors(ConstraintViolationException exception, HttpServletRequest req){
         Map<String, String> errors = new HashMap<>();
        exception.getConstraintViolations().forEach(v -> errors.put(v.getPropertyPath().toString(), v.getMessage()));
-       String message = "Validation failed for " + errors.size() + " field(s)";
        logger.error("400 - validation failed for {} filed(s).", errors.size());
-       return ResponseEntity.badRequest().body(new ApiResponse<Map<String, String>>(LocalDateTime.now(), 400, message, errors));
+       return ResponseEntity.badRequest().body(new ErrorResponse(
+               LocalDateTime.now(),
+               HttpStatus.BAD_REQUEST.value(),
+               exception.getMessage(),
+               req.getRequestURI(),
+               errors));
     }
 
 
     @ExceptionHandler(MultiStatusException.class)
-    public ResponseEntity<ApiResponse<MultiStatusException>> handlerMultiStatusException(MultiStatusException exception){
+    public ResponseEntity<ErrorResponse> handlerMultiStatusException(MultiStatusException exception, HttpServletRequest req){
         logger.error("207 - {}", exception.getMessage());
-        return ResponseEntity.status(207).body(new ApiResponse<MultiStatusException>(LocalDateTime.now(), 207, exception.getMessage(), null));
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", exception.getMessage());
+        return ResponseEntity.status(207).body(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.MULTI_STATUS.value(),
+                exception.getMessage(),
+                req.getRequestURI(),
+                errors));
     }
 
     @ExceptionHandler(UnprocessableEntityException.class)
-    public ResponseEntity<ApiResponse<UnprocessableEntityException>> hanlderUnprocessableEntityException(UnprocessableEntityException exception){
+    public ResponseEntity<ErrorResponse> hanlderUnprocessableEntityException(UnprocessableEntityException exception, HttpServletRequest req){
         logger.error("422 - {}", exception.getMessage());
-        return ResponseEntity.status(422).body(new ApiResponse<UnprocessableEntityException>(LocalDateTime.now(), 422, exception.getMessage(), null));
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Error", exception.getMessage());
+        return ResponseEntity.status(422).body(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                exception.getMessage(),
+                req.getRequestURI(),
+                errors));
     }
 
 

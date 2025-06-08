@@ -12,13 +12,13 @@ public class TheInvestorThingApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(TheInvestorThingApplication.class);
 
-	@Value("${theinvestorthing.version}")
+	@Value("${spring.theinvestorthing.version}")
 	private String version;
 
-	@Value("${theinvestorthing.author}")
+	@Value("${spring.theinvestorthing.author}")
 	private String author;
 
-	@Value("${theinvestorthing.module}")
+	@Value("${spring.theinvestorthing.module}")
 	private String module;
 
 	public static void main(String[] args) {
@@ -26,8 +26,8 @@ public class TheInvestorThingApplication {
 	}
 
 	@PostConstruct
-	private void postCostruct(){
-		logger.info("Application Info | Version: {} - Module: {} - Author: {}", version, module, author);
+	private void appInfo(){
+		logger.info("Application Info - Module: {} | Version: {} | Author: {}",  module, version, author);
 
 	}
 

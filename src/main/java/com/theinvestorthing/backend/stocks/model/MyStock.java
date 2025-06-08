@@ -1,9 +1,6 @@
 package com.theinvestorthing.backend.stocks.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +12,10 @@ public class MyStock {
     @Id
     @Column(name = "TICKER")
     private String ticker;
+
+    @ManyToOne
+    @JoinColumn(name = "TICKER", referencedColumnName = "TICKER", insertable = false, updatable = false)
+    private Stock stock;
 
     @Column(name = "NO_OF_SHARES")
     private BigDecimal noOfShares;
@@ -50,6 +51,8 @@ public class MyStock {
     public void setTicker(String ticker) {
         this.ticker = ticker;
     }
+
+    public String getCompanyName() {return stock.getCompanyName(); }
 
     public BigDecimal getNoOfShares() {
         return noOfShares;

@@ -7,7 +7,7 @@ public class MyStockDTOResp {
 
     private String ticker;
 
-    private LocalDate buyDate;
+    private String companyName;
 
     private BigDecimal noOfShares;
 
@@ -22,9 +22,9 @@ public class MyStockDTOResp {
     public MyStockDTOResp() {
     }
 
-    public MyStockDTOResp(String ticker, LocalDate buyDate, BigDecimal noOfShares, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal) {
+    public MyStockDTOResp(String ticker, String companyName, BigDecimal noOfShares, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal) {
         this.ticker = ticker;
-        this.buyDate = buyDate;
+        this.companyName = companyName;
         this.noOfShares = noOfShares;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
@@ -40,13 +40,8 @@ public class MyStockDTOResp {
         this.ticker = ticker;
     }
 
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
-    }
+    public String getCompanyName() {return this.companyName; }
+    public void setCompanyName(String companyName) {this.companyName = companyName; }
 
     public BigDecimal getNoOfShares() {
         return noOfShares;

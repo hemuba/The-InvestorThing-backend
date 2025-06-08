@@ -42,7 +42,6 @@ public class StockMapper {
 
         return new MyStock(
                 req.getTicker(),
-                req.getBuyDate(),
                 noOfShares,
                 purchasePrice,
                 currentPrice,
@@ -62,7 +61,7 @@ public class StockMapper {
 
         return new MyStockDTOResp(
                 req.getTicker(),
-                req.getBuyDate(),
+                req.getCompanyName(),
                 noOfShares,
                 purchasePrice,
                 currentPrice,

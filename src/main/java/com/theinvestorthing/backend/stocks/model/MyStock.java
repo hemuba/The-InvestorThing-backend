@@ -16,9 +16,6 @@ public class MyStock {
     @Column(name = "TICKER")
     private String ticker;
 
-    @Column(name = "BUY_DATE")
-    private LocalDate buyDate;
-
     @Column(name = "NO_OF_SHARES")
     private BigDecimal noOfShares;
 
@@ -37,9 +34,8 @@ public class MyStock {
     public MyStock() {
     }
 
-    public MyStock(String ticker, LocalDate buyDate, BigDecimal noOfShares, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal) {
+    public MyStock(String ticker, BigDecimal noOfShares, BigDecimal purchasePrice, BigDecimal currentPrice, BigDecimal currentReturn, BigDecimal currentTotal) {
         this.ticker = ticker;
-        this.buyDate = buyDate;
         this.noOfShares = noOfShares;
         this.purchasePrice = purchasePrice;
         this.currentPrice = currentPrice;
@@ -53,14 +49,6 @@ public class MyStock {
 
     public void setTicker(String ticker) {
         this.ticker = ticker;
-    }
-
-    public LocalDate getBuyDate() {
-        return buyDate;
-    }
-
-    public void setBuyDate(LocalDate buyDate) {
-        this.buyDate = buyDate;
     }
 
     public BigDecimal getNoOfShares() {

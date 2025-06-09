@@ -9,6 +9,7 @@ import com.theinvestorthing.backend.stocks.model.MyStock;
 import com.theinvestorthing.backend.stocks.repository.MyStocksRepository;
 import com.theinvestorthing.backend.stocks.repository.StocksRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public class MyStockService {
         MyStock stock = myStocksRepository.findByTickerIgnoreCase(ticker)
                 .orElseThrow( () -> new NotFoundException("Stock " + ticker + " not found in the Database"));
         return StockMapper.toMyStockResp(stock);
+    }
+
+    public List<MyStockDTOResp> getMyStockByCurrentReturnGreaterThan(Double value){
+        return myStocksRepository.findByCurrentReturnGreaterThan(value, Sort.by("currentReturn").descending())
+                .stream().map(StockMapper::toMyStockResp)
+                .toList();
     }
 
     // DELETE methods

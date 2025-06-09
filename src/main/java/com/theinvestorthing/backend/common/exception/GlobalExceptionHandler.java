@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         String traceId = req.getHeader("x-trace-id");
         exception.getBindingResult().getFieldErrors().forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-        logger.error("400 - validation failed for {} filed(s). traceId: {}", errors.size(), traceId);
+        logger.error("400 - validation failed for {} field(s). traceId: {}", errors.size(), traceId);
         return ResponseEntity.badRequest().body(new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         String traceId = req.getHeader("x-trace-id");
        exception.getConstraintViolations().forEach(v -> errors.put(v.getPropertyPath().toString(), v.getMessage()));
-        logger.error("400 - validation failed for {} filed(s). traceId: {}", errors.size(), traceId);
+        logger.error("400 - validation failed for {} field(s). traceId: {}", errors.size(), traceId);
         return ResponseEntity.badRequest().body(new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),

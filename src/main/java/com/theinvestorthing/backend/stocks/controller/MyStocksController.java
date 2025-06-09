@@ -6,6 +6,7 @@ import com.theinvestorthing.backend.stocks.dto.MyStockDTOReq;
 import com.theinvestorthing.backend.stocks.dto.MyStockDTOResp;
 import com.theinvestorthing.backend.stocks.service.MyStockService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,9 @@ public class MyStocksController {
     }
 
     @GetMapping("/by-ticker")
-    public ResponseEntity<ApiResponse<MyStockDTOResp>> getMyStockByTicker(@RequestHeader("x-trace-id") String traceId, @RequestParam String ticker){
+    public ResponseEntity<ApiResponse<MyStockDTOResp>> getMyStockByTicker(
+            @RequestHeader("x-trace-id") String traceId,
+            @RequestParam String ticker){
         MyStockDTOResp obj = myStockService.getMyStockByTicker(ticker);
         return ResponseEntity.status(200).body(new ApiResponse<MyStockDTOResp>(
                 LocalDateTime.now(),
@@ -48,6 +51,21 @@ public class MyStocksController {
                 "Stock " + ticker.toUpperCase(),
                 obj,
                 traceId));
+    }
+
+    @GetMapping("/by-current-return-greater-than")
+    public ResponseEntity<ApiResponse<List<MyStockDTOResp>>> getMyStockByCurrentReturnGreaterThan(
+            @RequestHeader("x-trace-id") String traceId,
+            @RequestParam Double value
+            ){
+        List<MyStockDTOResp> obj = myStockService.getMyStockByCurrentReturnGreaterThan(value);
+        return ResponseEntity.ok().body(new ApiResponse<List<MyStockDTOResp>>(
+                LocalDateTime.now(),
+                HttpStatus.OK.value(),
+                "Stock with current return greater than: " + value,
+                obj,
+                traceId
+        ));
     }
 
     // DELETE methods

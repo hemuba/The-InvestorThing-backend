@@ -56,7 +56,7 @@ public class StockMapper {
         BigDecimal purchasePrice = req.getPurchasePrice().setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentPrice = req.getCurrentPrice().setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal currentReturn = currentPrice.subtract(purchasePrice).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentReturn = currentPrice.subtract(purchasePrice).multiply(noOfShares).setScale(2, RoundingMode.HALF_UP);
         BigDecimal currentTotal = currentPrice.multiply(noOfShares).setScale(2, RoundingMode.HALF_UP);
 
         return new MyStockDTOResp(
